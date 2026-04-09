@@ -1,0 +1,2595 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)file:///Users/brunorusak/Downloads/guardia_sinoc.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <link rel="manifest" href="./manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Guardia Oft">
+  <meta name="theme-color" content="#2d7dd2">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <title>Guardia Oftalmológica</title>
+<style>
+  :root {
+    --bg: #f2f4f7;
+    --surface: #ffffff;
+    --surface2: #f8f9fb;
+    --border: rgba(0,0,0,0.08);
+    --text: #1a1d27;
+    --muted: #6b7280;
+    --accent: #2d7dd2;
+    --accent-light: #e8f1fb;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --orange: #d97706;
+    --orange-light: #fffbeb;
+    --yellow: #b45309;
+    --yellow-light: #fefce8;
+    --green: #16a34a;
+    --green-light: #f0fdf4;
+    --purple: #7c3aed;
+    --purple-light: #f5f3ff;
+    --teal: #0d9488;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif; font-size: 15px; line-height: 1.6; min-height: 100vh; }
+
+  /* HEADER */
+  .app-header { background: var(--accent); border-bottom: 3px solid rgba(0,0,0,0.18); padding: 13px 16px 12px; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .app-header-left { display: flex; align-items: center; gap: 10px; }
+  .app-header-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .app-header h1 { font-size: 17px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+  .app-header p { font-size: 11px; color: rgba(255,255,255,0.65); margin-top: 2px; letter-spacing: 0.2px; }
+  .app-header-author { background: rgba(255,255,255,0.15); border-radius: 7px; padding: 4px 10px; flex-shrink: 0; }
+  .app-header-author span { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.85); letter-spacing: 0.2px; }
+
+  /* SEARCH */
+  .search-bar { padding: 10px 16px; position: sticky; top: 62px; z-index: 99; background: var(--accent); border-bottom: 1px solid rgba(0,0,0,0.1); }
+  .search-bar input { width: 100%; background: rgba(255,255,255,0.95); border: none; border-radius: 10px; padding: 9px 14px; color: var(--text); font-size: 14px; outline: none; }
+  .search-bar input::placeholder { color: #9ca3af; }
+  .search-bar input:focus { box-shadow: 0 0 0 2px rgba(255,255,255,0.5); }
+
+  /* CATEGORY NAV */
+  .cat-nav { display: flex; gap: 8px; padding: 10px 16px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--border); background: var(--surface); position: sticky; top: 118px; z-index: 98; }
+  .cat-nav::-webkit-scrollbar { display: none; }
+  .cat-btn { white-space: nowrap; padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border); background: var(--bg); color: var(--muted); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.2s; flex-shrink: 0; }
+  .cat-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .cat-btn:not(.active):hover { border-color: var(--accent); color: var(--accent); }
+
+  /* CONTENT */
+  .content { padding: 16px; max-width: 720px; margin: 0 auto; }
+  .section-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin: 24px 0 10px; padding-left: 2px; }
+  .section-title:first-child { margin-top: 0; }
+
+  /* CARD */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .card-header { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px; user-select: none; }
+  .card-header:active { background: var(--surface2); opacity: 1; }
+  .card-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .card-info { flex: 1; }
+  .card-title { font-size: 15px; font-weight: 600; color: var(--text); }
+  .card-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .card-arrow { color: var(--muted); font-size: 12px; transition: transform 0.25s; }
+  .card.open .card-arrow { transform: rotate(90deg); }
+  .card-body { display: none; border-top: 1px solid var(--border); }
+  .card.open .card-body { display: block; }
+
+  /* TABS inside card */
+  .tab-bar { display: flex; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--border); background: var(--surface2); }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-btn { padding: 10px 16px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; white-space: nowrap; border-bottom: 2px solid transparent; transition: all 0.2s; }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-content { display: none; padding: 16px; }
+  .tab-content.active { display: block; }
+
+  /* CONTENT ELEMENTS */
+  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; margin-bottom: 10px; }
+  .badge-red { background: var(--red-light); color: var(--red); }
+  .badge-orange { background: var(--orange-light); color: var(--orange); }
+  .badge-yellow { background: var(--yellow-light); color: var(--yellow); }
+  .badge-green { background: var(--green-light); color: var(--green); }
+  .badge-blue { background: var(--accent-light); color: var(--accent); }
+  .badge-purple { background: var(--purple-light); color: var(--purple); }
+
+  .section-h { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); margin: 14px 0 6px; }
+  .section-h:first-child { margin-top: 0; }
+
+  .step-list { list-style: none; }
+  .step-list li { display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start; }
+  .step-num { min-width: 22px; height: 22px; border-radius: 50%; background: var(--accent-light); color: var(--accent); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .step-text { font-size: 13px; line-height: 1.5; color: var(--text); }
+  .step-text strong { color: #000; }
+
+  .bullet-list { list-style: none; }
+  .bullet-list li { padding: 5px 0; font-size: 13px; border-bottom: 1px solid var(--border); display: flex; gap: 8px; color: var(--text); }
+  .bullet-list li:last-child { border-bottom: none; }
+  .bullet-list li::before { content: "–"; color: var(--muted); flex-shrink: 0; }
+
+  .alert-red { background: var(--red-light); border-left: 3px solid var(--red); color: #991b1b; border-radius: 8px; padding: 9px 12px; font-size: 13px; margin: 8px 0; line-height: 1.5; }
+  .alert-yellow { background: var(--yellow-light); border-left: 3px solid var(--orange); color: #92400e; border-radius: 8px; padding: 9px 12px; font-size: 13px; margin: 8px 0; line-height: 1.5; }
+  .alert-blue { background: var(--accent-light); border-left: 3px solid var(--accent); color: #1e40af; border-radius: 8px; padding: 9px 12px; font-size: 13px; margin: 8px 0; line-height: 1.5; }
+  .alert-green { background: var(--green-light); border-left: 3px solid var(--green); color: #14532d; border-radius: 8px; padding: 9px 12px; font-size: 13px; margin: 8px 0; line-height: 1.5; }
+
+  .drug-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .drug-row:last-child { border-bottom: none; }
+  .drug-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .drug-dose { font-size: 12px; color: var(--muted); white-space: nowrap; margin-left: 8px; flex-shrink: 0; }
+  .drug-ci { font-size: 11px; color: var(--red); margin-top: 2px; }
+
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+  .compare-col { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
+  .compare-col h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .compare-col ul { list-style: none; }
+  .compare-col ul li { font-size: 12px; color: var(--muted); padding: 3px 0; }
+  .compare-col ul li::before { content: "• "; }
+
+  .grade-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+  .grade-table th { background: var(--surface2); padding: 8px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); border-bottom: 1px solid var(--border); }
+  .grade-table td { padding: 8px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text); }
+  .grade-table tr:last-child td { border-bottom: none; }
+
+  .source-tag { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 14px; padding-top: 8px; border-top: 1px solid var(--border); }
+
+  .diff-badge { font-size: 11px; padding: 2px 7px; border-radius: 5px; margin-left: 6px; }
+  .diff-wills { background: var(--accent-light); color: var(--accent); }
+
+  .hidden { display: none !important; }
+
+  /* Color accents per category */
+  .cat-ant .card-icon { background: #eff6ff; }
+  .cat-glau .card-icon { background: #f5f3ff; }
+  .cat-ret .card-icon { background: #fff7ed; }
+  .cat-neuro .card-icon { background: #fef2f2; }
+  .cat-orb .card-icon { background: #f0fdf4; }
+  .cat-uv .card-icon { background: #fef3c7; }
+  .cat-conj .card-icon { background: #f8fafc; }
+  .cat-parp .card-icon { background: #fdf4ff; }
+  .cat-lag .card-icon { background: #ecfeff; }
+  .cat-inoc .card-icon { background: #fef2f2; }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="app-header-left">
+    <div class="app-header-icon">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <rect x="7" y="1" width="4" height="16" rx="1.5" fill="white"/>
+        <rect x="1" y="7" width="16" height="4" rx="1.5" fill="white"/>
+      </svg>
+    </div>
+    <div>
+      <h1>Guardia Oftalmológica</h1>
+      <p>Wills Eye Manual · 7ª ed.</p>
+    </div>
+  </div>
+  <div class="app-header-author"><span>Dr. Rusak</span></div>
+</div>
+
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="Buscar tema o fármaco..." oninput="filterCards()">
+</div>
+
+<div class="cat-nav">
+  <button class="cat-btn active" onclick="filterCat(&#39;all&#39;, this)">Todos</button>
+  <button class="cat-btn" onclick="filterCat(&#39;parp&#39;, this)">🫦 Párpado</button>
+  <button class="cat-btn" onclick="filterCat(&#39;orb&#39;, this)">🟢 Órbita</button>
+  <button class="cat-btn" onclick="filterCat(&#39;lag&#39;, this)">💧 Vías lagrimales</button>
+  <button class="cat-btn" onclick="filterCat(&#39;conj&#39;, this)">⚪ Conjuntiva / Esclerótica</button>
+  <button class="cat-btn" onclick="filterCat(&#39;ant&#39;, this)">🔵 Segmento anterior</button>
+  <button class="cat-btn" onclick="filterCat(&#39;glau&#39;, this)">🟣 Glaucoma</button>
+  <button class="cat-btn" onclick="filterCat(&#39;ret&#39;, this)">🟠 Retina y vítreo</button>
+  <button class="cat-btn" onclick="filterCat(&#39;neuro&#39;, this)">🔴 Neuro-oft</button>
+  <button class="cat-btn" onclick="filterCat(&#39;uv&#39;, this)">🟤 Uveítis</button>
+  <button class="cat-btn" onclick="filterCat(&#39;inoc&#39;, this)">🦠 Infecciones intraoculares</button>
+</div>
+
+
+<div class="content" id="mainContent">
+
+<div class="section-title" data-cat="parp">🫦 Párpado</div>
+
+<div class="card cat-parp" data-cat="parp" data-search="blefaritis meibomitis costras párpados eritromicina doxiciclina compresas calientes Demodex">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">👁</div>
+    <div class="card-info"><div class="card-title">Blefaritis / Meibomitis</div><div class="card-sub">Inflamación borde palpebral · Crónica · Demodex</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,&#39;bl1&#39;)">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;bl2&#39;)">💊 Fármacos</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;bl3&#39;)">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;bl4&#39;)">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="bl1">
+      <div class="section-h">Reconocer</div>
+      <ul class="bullet-list">
+        <li>Bordes palpebrales con costras, enrojecidos, engrosados, vasos prominentes</li>
+        <li>Collares de escamas y/o manguitos cilíndricos en pestañas</li>
+        <li>Síntomas peores por la mañana (contrario al ojo seco que empeora a la tarde)</li>
+        <li>Puede asociar QPS, rosácea, calacio recurrente</li>
+      </ul>
+      <div class="section-h">Pasos</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Compresas calientes 10-15 min, 2-4 veces/día</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Higiene palpebral con champú suave o solución comercial 2 veces/día</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Si hay xeroftalmía → lágrimas sin conservantes c/4-8h</span></li>
+        <li><span class="step-num">4</span><span class="step-text">Si moderada-grave → antibiótico tópico nocturno</span></li>
+      </ol>
+    </div>
+    <div class="tab-content" id="bl2">
+      <div class="drug-row"><div><div class="drug-name">Pomada eritromicina o gel azitromicina</div><div class="drug-ci">En borde palpebral al acostarse</div></div><div class="drug-dose">1×/noche</div></div>
+      <div class="drug-row"><div><div class="drug-name">Tobramicina/dexametasona pomada</div><div class="drug-ci">Si no responde a tratamiento convencional</div></div><div class="drug-dose">c/8-12h × 2-4 sem</div></div>
+      <div class="drug-row"><div><div class="drug-name">Doxiciclina 100 mg VO</div><div class="drug-ci">CI embarazo, lactancia, niños ≤8 años</div></div><div class="drug-dose">1×/día × 12 sem luego reducir</div></div>
+      <div class="drug-row"><div><div class="drug-name">Azitromicina 500 mg VO</div><div class="drug-ci">3 días × 3 ciclos separados 7 días</div></div><div class="drug-dose">Alternativa a doxiciclina</div></div>
+      <div class="drug-row"><div><div class="drug-name">Ciclosporina 0.05% colirio</div></div><div class="drug-dose">c/12h</div></div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 5.8</div>
+    </div>
+    <div class="tab-content" id="bl3">
+      <div class="alert-red">NO derivados de tetraciclina en embarazadas, lactantes ni niños ≤8 años — usar eritromicina 200 mg VO c/12h</div>
+      <div class="alert-yellow">Blefaritis unilateral refractaria → sospechar carcinoma de glándulas sebáceas del párpado</div>
+      <div class="alert-blue">Si hay manguitos cilíndricos en pestañas → sospechar Demodex → aceite de árbol del té o ácido hipocloroso ≥6 semanas</div>
+    </div>
+    <div class="tab-content" id="bl4">
+      <div class="section-h">Seguimiento</div>
+      <ul class="bullet-list">
+        <li>Control a las 2-4 semanas según gravedad</li>
+        <li>Reducir higiene a 1×/día al mejorar — puede requerir tratamiento indefinido</li>
+        <li>Si asocia rosácea → doxiciclina sistémica es la base del tratamiento</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-parp" data-cat="parp" data-search="blefaroespasmo toxina botulínica cierre involuntario párpados espasmo hemifacial Meige orbicular">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">😑</div>
+    <div class="card-info"><div class="card-title">Blefaroespasmo</div><div class="card-sub">Cierre involuntario bilateral · Toxina botulínica</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,&#39;ble1&#39;)">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;ble2&#39;)">💊 Fármacos</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;ble3&#39;)">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;ble4&#39;)">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="ble1">
+      <div class="section-h">Reconocer</div>
+      <ul class="bullet-list">
+        <li>Contracciones involuntarias <strong>bilaterales</strong> y episódicas del orbicular</li>
+        <li>Desaparece durante el sueño (clave diagnóstica)</li>
+        <li>Puede acompañarse de movimientos orofaciales (síndrome de Meige)</li>
+      </ul>
+      <div class="section-h">Descartar primero</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Buscar irritación ocular (cuerpo extraño, triquiasis, blefaritis, ojo seco) — tratarla</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Si es típico bilateral → no requiere imagen de SNC</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Si es unilateral o atípico → RM ángulo pontocerebeloso (descartar espasmo hemifacial)</span></li>
+      </ol>
+    </div>
+    <div class="tab-content" id="ble2">
+      <div class="drug-row"><div><div class="drug-name">Toxina botulínica A (Botox)</div><div class="drug-ci">Inyección en músculos orbiculares — primera línea</div></div><div class="drug-dose">Cada 3-4 meses</div></div>
+      <div class="drug-row"><div><div class="drug-name">Lorazepam VO</div><div class="drug-ci">Rara vez útil — limita el uso por sedación</div></div><div class="drug-dose">Según dosis</div></div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 6.7</div>
+    </div>
+    <div class="tab-content" id="ble3">
+      <div class="alert-yellow">NO es urgencia oftalmológica — pero puede causar ceguera funcional si es grave</div>
+      <div class="alert-blue">Espasmo hemifacial: unilateral, NO desaparece durante el sueño → siempre RM</div>
+    </div>
+    <div class="tab-content" id="ble4">
+      <div class="section-h">Diagnóstico diferencial</div>
+      <ul class="bullet-list">
+        <li><strong>Espasmo hemifacial:</strong> unilateral, todo un lado de la cara, no desaparece en sueño</li>
+        <li><strong>Mioquimia palpebral:</strong> fasciculaciones finas, unilateral, autolimitada (estrés, cafeína)</li>
+        <li><strong>Apraxia apertura parpebral:</strong> asociado a Parkinson, sin espasmo del orbicular</li>
+      </ul>
+      <div class="section-h">Cirugía</div>
+      <ul class="bullet-list">
+        <li>Miectomía del orbicular si no responde a toxina botulínica</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="section-title" data-cat="orb">🟢 Órbita</div>
+
+<div class="card cat-orb" data-cat="orb" data-search="celulitis orbitaria preseptal antibiótico ampicilina TAC absceso proptosis tabique">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🦠</div>
+    <div class="card-info">
+      <div class="card-title">Celulitis preseptal y orbitaria</div>
+      <div class="card-sub">Diferencias · Tratamiento · Absceso</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this, &#39;cel1&#39;)">Diferencial</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;cel2&#39;)">Preseptal tto</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;cel3&#39;)">Orbitaria tto</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;cel4&#39;)">Absceso</div>
+    </div>
+    <div class="tab-content active" id="cel1">
+      <div class="section-h">Clave diagnóstica: tabique orbitario</div>
+      <div class="compare-grid">
+        <div class="compare-col"><h4 style="color: #d97706">Preseptal</h4><ul><li>Anterior al tabique</li><li>Sin proptosis</li><li>Sin limitación motilidad</li><li>Sin dolor al mover ojo</li><li>AV normal</li><li>Pupila normal</li></ul></div>
+        <div class="compare-col"><h4 style="color: #dc2626">Orbitaria</h4><ul><li>Posterior al tabique</li><li>PROPTOSIS</li><li>Limitación motilidad</li><li>Dolor al mover ojo</li><li>Posible ↓AV</li><li>Posible DPAR</li></ul></div>
+      </div>
+      <div class="alert-yellow">⚠ Si hay duda → TAC con contraste para diferenciar</div>
+      <div class="section-h">Gérmenes más frecuentes</div>
+      <ul class="bullet-list">
+        <li>S. aureus, Streptococcus (ambas formas)</li>
+        <li>Niños no inmunizados: H. influenzae (preseptal)</li>
+        <li>Post-sinusitis: polimicrobiano, anaerobios</li>
+        <li>Considerar SARM en factores de riesgo</li>
+      </ul>
+    </div>
+    <div class="tab-content" id="cel2">
+      <div class="section-h">Preseptal leve (adulto &gt;5 años, afebril)</div>
+      <div class="drug-row"><div><div class="drug-name">Amoxicilina-clavulánico</div></div><div class="drug-dose">875/125 mg VO c/12h x 10 días</div></div>
+      <div class="section-h">Preseptal moderado-grave o niño ≤5 años → internar</div>
+      <div class="drug-row"><div><div class="drug-name">Ampicilina-sulbactam IV + vancomicina</div></div><div class="drug-dose">según peso</div></div>
+      <div class="alert-yellow">⚠ Pasar a VO (amoxiclav) cuando haya mejoría significativa → completar 10-14 días total</div>
+      <div class="section-h">Criterios de hospitalización preseptal</div>
+      <ul class="bullet-list">
+        <li>Aspecto tóxico, fiebre alta</li>
+        <li>Niños ≤5 años</li>
+        <li>Sin mejoría 24-48h de VO</li>
+        <li>Duda diagnóstica con orbitaria</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 6.10</div>
+    </div>
+    <div class="tab-content" id="cel3">
+      <span class="badge badge-red">Orbitaria → internar siempre</span>
+      <div class="section-h">Estudio</div>
+      <ul class="bullet-list">
+        <li>TAC de órbitas y senos paranasales CON contraste</li>
+        <li>Hemograma + hemocultivos, VES, PCR</li>
+        <li>Interconsultas: pediatría, ORL, infectología</li>
+        <li>Si origen dental: cirugía maxilofacial urgente</li>
+      </ul>
+      <div class="section-h">Antibiótico IV</div>
+      <div class="drug-row"><div><div class="drug-name">Ampicilina-sulbactam</div></div><div class="drug-dose">300 mg/kg/día en 4 dosis IV</div></div>
+      <div class="drug-row"><div><div class="drug-name">o Piperacilina-tazobactam</div></div><div class="drug-dose">240 mg/kg/día en 3 dosis</div></div>
+      <div class="drug-row"><div><div class="drug-name">+ Vancomicina si sospecha SARM</div></div><div class="drug-dose">15 mg/kg c/12h IV</div></div>
+      <ul class="bullet-list">
+        <li>Mínimo 48-72h IV → pasar a VO amoxiclav hasta completar 10-14 días</li>
+        <li>Evaluar 2 veces/día las primeras 48h</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 7.3.1</div>
+    </div>
+    <div class="tab-content" id="cel4">
+      <span class="badge badge-red">Absceso subperióstico</span>
+      <div class="section-h">Sospechar si</div>
+      <ul class="bullet-list">
+        <li>No mejora o empeora a las 48-72h de antibióticos IV</li>
+        <li>Proptosis creciente con desplazamiento del globo</li>
+      </ul>
+      <div class="section-h">Conducta</div>
+      <ul class="bullet-list">
+        <li>Repetir TAC con contraste</li>
+        <li>Drenaje quirúrgico + ORL</li>
+        <li>El deterioro clínico solo ya es indicación de drenaje (no esperar imagen)</li>
+      </ul>
+      <div class="alert-yellow">⚠ Si hay tensión orbitaria, neuropatía óptica o PIO muy elevada → cantotomía/cantólisis urgente</div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 7.3.2</div>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-orb" data-cat="orb" data-search="hemorragia retrobulbar cantotomía cantólisis síndrome compartimental orbitario SCO proptosis">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🔧</div>
+    <div class="card-info">
+      <div class="card-title">Hemorragia retrobulbar</div>
+      <div class="card-sub">SCO · Cantotomía y cantólisis · Técnica</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this, &#39;hr1&#39;)">Diagnóstico</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;hr2&#39;)">Cantotomía</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;hr3&#39;)">Seguimiento</div>
+    </div>
+    <div class="tab-content active" id="hr1">
+      <span class="badge badge-red">SCO = Emergencia oftalmológica</span>
+      <div class="section-h">Clínica</div>
+      <ul class="bullet-list">
+        <li>Trauma reciente, disminución AV súbita, DPAR</li>
+        <li>Proptosis con resistencia a la retropulsión</li>
+        <li>Párpados tensos ("duros como piedras")</li>
+        <li>PIO muy elevada</li>
+        <li>Hemorragia subconjuntival difusa 360°</li>
+        <li>Limitación de motilidad</li>
+      </ul>
+      <div class="alert-red">⚠ Diagnóstico CLÍNICO — no esperar TAC para tratar<br>Retina no perfundida → infarto irreversible en ~90 min</div>
+      <div class="section-h">Laboratorio (post-descompresión)</div>
+      <ul class="bullet-list">
+        <li>VES + PCR + plaquetas si ≥55 años (descartar ACG)</li>
+        <li>Suspender AAS y anticoagulantes si posible</li>
+      </ul>
+    </div>
+    <div class="tab-content" id="hr2">
+      <div class="section-h">Técnica: cantotomía lateral + cantólisis inferior</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Lidocaína 2% + adrenalina subcutánea en canto externo</span></li>
+        <li><span class="step-num">2</span><span class="step-text"><strong>Cantotomía</strong>: tijeras de punta roma → incisión grosor completo ~1cm en canto externo (piel hasta conjuntiva)</span></li>
+        <li><span class="step-num">3</span><span class="step-text"><strong>Cantólisis inferior</strong>: pinzas dentadas agarran párpado inferior → tirar hacia arriba → tijeras apuntando a la nariz → cortar la rama inferior del tendón cantal lateral</span></li>
+        <li><span class="step-num">4</span><span class="step-text">El párpado debe quedar completamente <strong>libre del globo</strong></span></li>
+        <li><span class="step-num">5</span><span class="step-text">Si persiste SCO → verificar cantólisis completa o hacer cantólisis superior</span></li>
+      </ol>
+      <div class="alert-red">⚠ Cantotomía SOLA es INSUFICIENTE — siempre completar con cantólisis<br>⚠ La razón más común de fallo es cantólisis incompleta</div>
+      <div class="section-h">Resultado esperado (15 min)</div>
+      <ul class="bullet-list">
+        <li>PIO disminuye</li>
+        <li>Retina se reperfunde</li>
+        <li>Visión puede mejorar espectacularmente</li>
+      </ul>
+    </div>
+    <div class="tab-content" id="hr3">
+      <div class="section-h">Post-cantólisis</div>
+      <ul class="bullet-list">
+        <li>Monitorizar PIO y visión las primeras 12-24h</li>
+        <li>Control médico de PIO si necesario (β-bloqueante, IAC, manitol)</li>
+        <li>TAC una vez estabilizado</li>
+        <li>Si persiste neuropatía óptica → control seriado de AV y CV por 6 meses</li>
+      </ul>
+      <div class="section-h">Herida de cantólisis</div>
+      <ul class="bullet-list">
+        <li>Dejar abierta con pomada ATB 3 veces/día → cicatrización espontánea</li>
+        <li>O cantoplastia secundaria 1-3 semanas después</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 3.10</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title" data-cat="lag">💧 Vías lagrimales</div>
+
+<div class="card cat-lag" data-cat="lag" data-search="dacriocistitis saco lagrimal dacriocistorrinostomía obstrucción nasolagrimal absceso amoxicilina cefazolina">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">💧</div>
+    <div class="card-info">
+      <div class="card-title">Dacriocistitis</div>
+      <div class="card-sub">Infección del saco lagrimal · Obstrucción nasolagrimal</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this, &#39;dc1&#39;)">Clínica y diagnóstico</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;dc2&#39;)">Tratamiento</div>
+    </div>
+    <div class="tab-content active" id="dc1">
+      <div class="section-h">Síntomas</div>
+      <ul class="bullet-list">
+        <li>Dolor, enrojecimiento e hinchazón en el canto interno inferior (medial del párpado inferior)</li>
+        <li>Lagrimeo, secreción, fiebre — puede ser recidivante</li>
+      </ul>
+      <div class="section-h">Signos</div>
+      <ul class="bullet-list">
+        <li>Tumefacción eritematosa dolorosa en el canto interno <strong>por debajo del tendón del canto interno</strong></li>
+        <li>Al comprimir el saco lagrimal → secreción mucopurulenta por el punto lagrimal</li>
+        <li>Puede haber absceso o fístula cutánea</li>
+      </ul>
+      <div class="alert-yellow">⚠ Masa por ENCIMA del tendón del canto interno → sospechar tumor del saco lagrimal (raro)</div>
+      <div class="section-h">Diagnóstico diferencial</div>
+      <ul class="bullet-list">
+        <li>Celulitis facial: sin secreción al comprimir el saco, conducto lagrimal permeable</li>
+        <li>Sinusitis etmoidal: dolor en hueso nasal, obstrucción nasal</li>
+      </ul>
+      <div class="section-h">Estudio</div>
+      <ul class="bullet-list">
+        <li>Cultivo de la secreción del punto lagrimal (Gram + agar sangre)</li>
+        <li>TC si grave, atípico o no responde a ATB</li>
+        <li><strong>NO sondar ni irrigar durante la infección aguda</strong></li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 6.9</div>
+    </div>
+    <div class="tab-content" id="dc2">
+      <div class="section-h">Adulto leve (afebril, buen estado general)</div>
+      <div class="drug-row"><div><div class="drug-name">Amoxicilina-clavulánico 875/125 mg VO</div></div><div class="drug-dose">c/12h × 10-14 días</div></div>
+      <div class="drug-row"><div><div class="drug-name">o Cefalexina 500 mg VO</div></div><div class="drug-dose">c/6h</div></div>
+      <div class="section-h">Adulto grave / febril → hospitalizar</div>
+      <div class="drug-row"><div><div class="drug-name">Cefazolina 1 g IV</div><div class="drug-ci">Pasar a VO amoxiclav cuando mejora</div></div><div class="drug-dose">c/8h</div></div>
+      <div class="section-h">Medidas generales</div>
+      <ul class="bullet-list">
+        <li>Compresas calientes + masaje suave en canto interno c/6h</li>
+        <li>ATB tópico complementario (TMP/polimixina B c/6h) — no suficiente solo</li>
+        <li>Analgésicos según necesidad</li>
+        <li>Incisión y drenaje si hay absceso fluctuante</li>
+      </ul>
+      <div class="section-h">Tratamiento definitivo (electivo)</div>
+      <ul class="bullet-list">
+        <li><strong>Dacriocistorrinostomía (DCR)</strong> con tubo de silicona — una vez resuelto el episodio agudo, especialmente en dacriocistitis crónica recurrente</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 6.9</div>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-lag" data-cat="lag" data-search="obstrucción congénita conducto nasolagrimal lagrimeo epífora bebé lactante sondaje masaje Hasner">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">👶</div>
+    <div class="card-info"><div class="card-title">Obstrucción congénita del conducto nasolagrimal</div><div class="card-sub">Lactante · Masaje · Sondaje electivo</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,&#39;ocn1&#39;)">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;ocn2&#39;)">💊 Fármacos</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;ocn3&#39;)">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;ocn4&#39;)">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="ocn1">
+      <div class="section-h">Reconocer</div>
+      <ul class="bullet-list">
+        <li>Lagrimeo + secreción mucopurulenta en pestañas mediales desde primeras semanas de vida</li>
+        <li>Ojo blanco (no hay inyección conjuntival)</li>
+        <li>Al comprimir el saco lagrimal → reflujo de secreción mucoide por el punto lagrimal</li>
+      </ul>
+      <div class="section-h">Pasos</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Descartar glaucoma congénito (córnea turbia, buftalmos, fotofobia)</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Enseñar a los padres masaje digital 4×/día en el saco lagrimal</span></li>
+        <li><span class="step-num">3</span><span class="step-text">ATB tópico si hay secreción activa</span></li>
+        <li><span class="step-num">4</span><span class="step-text">La mayoría se resuelve espontáneamente antes de los 6-12 meses</span></li>
+        <li><span class="step-num">5</span><span class="step-text">Si persiste después de los 12 meses → sondaje</span></li>
+      </ol>
+    </div>
+    <div class="tab-content" id="ocn2">
+      <div class="drug-row"><div><div class="drug-name">Polimixina/trimetoprima tópica</div><div class="drug-ci">Controlar secreción mucopurulenta</div></div><div class="drug-dose">c/6h según necesidad</div></div>
+      <div class="drug-row"><div><div class="drug-name">ATB sistémico</div><div class="drug-ci">Solo si hay dacriocistitis aguda</div></div><div class="drug-dose">Ver dacriocistitis</div></div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 8.10</div>
+    </div>
+    <div class="tab-content" id="ocn3">
+      <div class="alert-red">NO sondar durante la infección aguda</div>
+      <div class="alert-yellow">Si hay dacriocistitis aguda (saco rojo, hinchado) → ATB sistémico primero</div>
+      <div class="alert-blue">Dacriocele: masa azulada quística bajo el canto interno al nacer → puede requerir drenaje urgente si hay obstrucción nasal bilateral</div>
+    </div>
+    <div class="tab-content" id="ocn4">
+      <div class="section-h">Técnica de masaje de Crigler</div>
+      <ul class="bullet-list">
+        <li>Dedo índice sobre el canalículo común (ángulo interno del ojo)</li>
+        <li>Presión hacia dentro y hacia abajo — 4×/día</li>
+      </ul>
+      <div class="section-h">Escalada si no mejora</div>
+      <ul class="bullet-list">
+        <li>Sondaje bajo anestesia general (generalmente 12-18 meses)</li>
+        <li>Si falla sondaje → dacrioplastia con balón o intubación con silicona</li>
+        <li>Última línea: DCR (dacriocistorrinostomía)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="section-title" data-cat="conj">⚪ Conjuntiva / Esclerótica</div>
+
+<div class="card cat-conj" data-cat="conj" data-search="conjuntivitis aguda crónica vírica bacteriana alérgica gonocócica clamidia folículos papilas">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">👁</div>
+    <div class="card-info">
+      <div class="card-title">Conjuntivitis aguda y crónica</div>
+      <div class="card-sub">Vírica · Bacteriana · Alérgica · Gonocócica · Clamidia</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this, &#39;cj1&#39;)">Diferencial rápido</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;cj2&#39;)">Vírica</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;cj3&#39;)">Bacteriana</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;cj4&#39;)">Alérgica</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;cj5&#39;)">Gonocócica</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;cj6&#39;)">Clamidia</div>
+    </div>
+    <div class="tab-content active" id="cj1">
+      <div class="compare-grid">
+        <div class="compare-col"><h4 style="color:var(--accent)">Folículos</h4><ul><li>Vírica (adenovirus)</li><li>Herpes simple</li><li>Clamidia (adultos)</li><li>Molusco contagioso</li><li>Tóxica (crónica)</li></ul></div>
+        <div class="compare-col"><h4 style="color:var(--orange)">Papilas</h4><ul><li>Bacteriana</li><li>Alérgica</li><li>Vernal/atópica</li><li>Por lentes de contacto</li></ul></div>
+      </div>
+      <div class="section-h">Claves clínicas rápidas</div>
+      <ul class="bullet-list">
+        <li><strong>Ganglio preauricular palpable</strong> → vírica o gonocócica</li>
+        <li><strong>Prurito intenso</strong> → alérgica</li>
+        <li><strong>Secreción purulenta abundante hiperaguda</strong> → gonocócica (urgencia)</li>
+        <li><strong>Unilateral + folículos + paño corneal</strong> → clamidia en adulto joven</li>
+        <li><strong>Nódulos umbilicados en párpado</strong> → molusco contagioso</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 5.1, 5.2</div>
+    </div>
+    <div class="tab-content" id="cj2">
+      <span class="badge badge-blue">Conjuntivitis vírica (adenovirus)</span>
+      <div class="section-h">Signos</div>
+      <ul class="bullet-list">
+        <li>Folículos en párpado inferior, ganglio preauricular palpable y doloroso</li>
+        <li>Secreción acuosa, hemorragia subconjuntival puntiforme</li>
+        <li>Puede formar membrana/seudomembrana</li>
+        <li>ISE (infiltrados subepiteliales) semanas después — ↓ visión, fotofobia</li>
+      </ul>
+      <div class="section-h">Tratamiento</div>
+      <ul class="bullet-list">
+        <li>Autolimitada — informar al paciente (puede durar 2-3 semanas)</li>
+        <li>Muy contagiosa los primeros 10-12 días — higiene de manos, evitar contacto</li>
+        <li>Lágrimas artificiales sin conservantes c/4-8h + compresas frías</li>
+        <li>Si membrana/seudomembrana → retirar suavemente + prednisolona 1% o loteprednol c/6h</li>
+        <li>Si ISE sintomáticos → loteprednol 0.2-0.5% c/12h (reducción muy lenta)</li>
+      </ul>
+      <div class="alert-red">⚠ NO antibióticos de rutina en conjuntivitis vírica<br>⚠ Esteroides prolongan el período contagioso — usar con criterio</div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 5.1</div>
+    </div>
+    <div class="tab-content" id="cj3">
+      <span class="badge badge-orange">Conjuntivitis bacteriana (no gonocócica)</span>
+      <div class="section-h">Signos</div>
+      <ul class="bullet-list">
+        <li>Secreción purulenta blanco-amarillenta, papilas conjuntivales</li>
+        <li>Sin adenopatía preauricular (a diferencia de la gonocócica)</li>
+        <li>Gérmenes: S. aureus, S. epidermidis, H. influenzae (niños), S. pneumoniae</li>
+      </ul>
+      <div class="section-h">Tratamiento</div>
+      <div class="drug-row"><div><div class="drug-name">Fluoroquinolona tópica o TMP/polimixina B</div></div><div class="drug-dose">c/6h × 5-7 días</div></div>
+      <ul class="bullet-list">
+        <li>H. influenzae → agregar amoxicilina-clavulánico VO (puede dar otitis/meningitis)</li>
+        <li>Cultivos si grave, recidivante o no responde en 48h</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 5.1</div>
+    </div>
+    <div class="tab-content" id="cj4">
+      <span class="badge badge-green">Conjuntivitis alérgica</span>
+      <div class="section-h">Signos</div>
+      <ul class="bullet-list">
+        <li>Prurito intenso bilateral, quemosis, párpados edematosos, papilas</li>
+        <li>Sin adenopatía preauricular</li>
+        <li><strong>Vernal/atópica grave:</strong> papilas gigantes en párpado superior, úlcera en escudo, manchas de Horner-Trantas</li>
+      </ul>
+      <div class="section-h">Tratamiento escalonado</div>
+      <ul class="bullet-list">
+        <li><strong>Leve:</strong> lágrimas artificiales c/4-8h + compresas frías</li>
+        <li><strong>Moderada:</strong> antihistamínico/estabilizador mastocitos: olopatadina 0.1% c/12h, epinastina 0.05% c/12h, ketotifeno c/12h</li>
+        <li><strong>Grave:</strong> loteprednol 0.2-0.5% c/6h + antihistamínico VO (cetirizina, loratadina)</li>
+        <li><strong>Úlcera en escudo:</strong> prednisolona 1% + ATB tópico + ciclopentolato c/8h</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 5.1</div>
+    </div>
+    <div class="tab-content" id="cj5">
+      <span class="badge badge-red">Conjuntivitis gonocócica — URGENCIA</span>
+      <div class="section-h">Signos</div>
+      <ul class="bullet-list">
+        <li>Secreción purulenta INTENSA, inicio hiperagudo (1-24h)</li>
+        <li>Quemosis grave, adenopatía preauricular, párpados muy hinchados</li>
+        <li><strong>Riesgo de úlcera corneal y perforación precoz</strong></li>
+      </ul>
+      <div class="section-h">Estudio</div>
+      <ul class="bullet-list">
+        <li>Frotis conjuntival → Gram inmediato (diplococos gramnegativos intracelulares)</li>
+        <li>Cultivo en agar chocolate/Thayer-Martin</li>
+        <li>Explorar córnea completa buscando úlceras periféricas</li>
+      </ul>
+      <div class="section-h">Tratamiento</div>
+      <div class="drug-row"><div><div class="drug-name">Ceftriaxona 1 g IM</div><div class="drug-ci">Si afectación corneal → 1 g IV c/12-24h + hospitalizar</div></div><div class="drug-dose">Dosis única</div></div>
+      <div class="drug-row"><div><div class="drug-name">Azitromicina 1 g VO</div><div class="drug-ci">Tratar coinfección por clamidia</div></div><div class="drug-dose">Dosis única</div></div>
+      <div class="drug-row"><div><div class="drug-name">Fluoroquinolona tópica</div></div><div class="drug-dose">c/2h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Irrigación con SF</div></div><div class="drug-dose">c/6h hasta que cese la secreción</div></div>
+      <div class="alert-red">⚠ Tratar también a la pareja sexual<br>⚠ Descartar otras ETS — derivar a clínica de ETS</div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 5.1</div>
+    </div>
+    <div class="tab-content" id="cj6">
+      <span class="badge badge-purple">Conjuntivitis por Chlamydia (inclusión)</span>
+      <div class="section-h">Clínica</div>
+      <ul class="bullet-list">
+        <li>Adulto joven sexualmente activo, unilateral, crónica (&gt;4 semanas)</li>
+        <li>Folículos conjuntivales inferiores, paño corneal superior, ISE periféricos</li>
+        <li>Adenopatía preauricular, secreción mucosa viscosa</li>
+        <li>Puede asociarse a vaginitis, cervicitis o uretritis</li>
+      </ul>
+      <div class="section-h">Tratamiento</div>
+      <div class="drug-row"><div><div class="drug-name">Azitromicina 1 g VO</div></div><div class="drug-dose">Dosis única</div></div>
+      <div class="drug-row"><div><div class="drug-name">o Doxiciclina 100 mg VO</div><div class="drug-ci">CI en embarazo y niños &lt;8 años</div></div><div class="drug-dose">c/12h × 7 días</div></div>
+      <div class="drug-row"><div><div class="drug-name">Eritromicina pomada</div></div><div class="drug-dose">c/8-12h × 2-3 sem</div></div>
+      <div class="alert-yellow">⚠ Tratar también a la pareja sexual. Evaluar otras ETS</div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 5.2</div>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-conj" data-cat="conj" data-search="hemorragia subconjuntival ojo rojo sangre conjuntiva Valsalva anticoagulantes hipertensión">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🔴</div>
+    <div class="card-info"><div class="card-title">Hemorragia subconjuntival</div><div class="card-sub">Generalmente benigna · Descartar globo abierto si traumática</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,&#39;hsc1&#39;)">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;hsc2&#39;)">💊 Fármacos</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;hsc3&#39;)">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;hsc4&#39;)">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="hsc1">
+      <div class="section-h">Evaluación rápida</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">¿Hubo traumatismo? → descartar rotura de globo (Seidel, PIO baja, CA anormal)</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Medir la presión arterial</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Preguntar por anticoagulantes, AAS, AINE, maniobra de Valsalva reciente</span></li>
+        <li><span class="step-num">4</span><span class="step-text">Si no traumática y primer episodio → tranquilizar, no requiere tratamiento</span></li>
+      </ol>
+      <div class="alert-green">✓ Se resuelve espontáneamente en 2-3 semanas</div>
+    </div>
+    <div class="tab-content" id="hsc2">
+      <div class="drug-row"><div><div class="drug-name">Lágrimas artificiales</div><div class="drug-ci">Si hay irritación leve</div></div><div class="drug-dose">c/6h</div></div>
+      <div class="drug-row"><div><div class="drug-name">No suspender anticoagulantes</div><div class="drug-ci">Sin autorización del médico de base</div></div><div class="drug-dose">—</div></div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 5.5</div>
+    </div>
+    <div class="tab-content" id="hsc3">
+      <div class="alert-red">Si traumática con HSC ampollosa 360° → descartar rotura de globo urgente</div>
+      <div class="alert-yellow">Recidivante → pedir TP, TTPA, hemograma (descartar leucemia, trombocitopenia, coagulopatía)</div>
+      <div class="alert-blue">Si hay proptosis o signos orbitarios en HSC no traumática → TC órbita (descartar masa orbitaria)</div>
+    </div>
+    <div class="tab-content" id="hsc4">
+      <div class="section-h">Etiologías</div>
+      <ul class="bullet-list">
+        <li>Valsalva (tos, estornudo, vómitos, esfuerzo)</li>
+        <li>Hipertensión arterial / Diabetes</li>
+        <li>Anticoagulantes o antiagregantes</li>
+        <li>Traumatismo</li>
+        <li>Idiopática (la más frecuente)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-conj" data-cat="conj" data-search="epiescleritis escleritis dolor escleral tono violáceo AINE naproxeno prednisona artritis reumatoide fenilefrina">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🔴</div>
+    <div class="card-info">
+      <div class="card-title">Epiescleritis y Escleritis</div>
+      <div class="card-sub">Diferencial clave · AINE · Enf. sistémica</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this, &#39;es1&#39;)">Diferencial</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;es2&#39;)">Epiescleritis tto</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;es3&#39;)">Escleritis tto</div>
+    </div>
+    <div class="tab-content active" id="es1">
+      <div class="section-h">Clave diagnóstica: prueba con fenilefrina 2.5%</div>
+      <div class="compare-grid">
+        <div class="compare-col"><h4 style="color:var(--accent)">Epiescleritis</h4><ul><li>Vasos superficiales, radiales</li><li>Se mueven con hisopo</li><li>Blanquean con fenilefrina</li><li>Dolor leve o ausente</li><li>Sin tono violáceo</li><li>Paciente joven</li><li>Autolimitada</li></ul></div>
+        <div class="compare-col"><h4 style="color:var(--red)">Escleritis</h4><ul><li>Vasos profundos + esclerales</li><li>NO se mueven con hisopo</li><li>NO blanquean con fenilefrina</li><li>Dolor INTENSO, terebrante</li><li>Tono violáceo</li><li>Paciente mayor</li><li>Asociada a enf. sistémica</li></ul></div>
+      </div>
+      <div class="section-h">Etiología sistémica (escleritis ~50%)</div>
+      <ul class="bullet-list">
+        <li>Artritis reumatoide (más frecuente), granulomatosis de Wegener, LES, espondilitis</li>
+        <li>Infecciosa: herpes zóster, Pseudomonas, micobacterias, sífilis</li>
+        <li>Escleritis necrosante + AR → mayor mortalidad por arteritis coronaria → tratar urgente</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 5.6, 5.7</div>
+    </div>
+    <div class="tab-content" id="es2">
+      <span class="badge badge-blue">Epiescleritis — generalmente autolimitada</span>
+      <div class="section-h">Tratamiento</div>
+      <div class="drug-row"><div><div class="drug-name">Lágrimas artificiales</div><div class="drug-ci">Si leve</div></div><div class="drug-dose">c/6h</div></div>
+      <div class="drug-row"><div><div class="drug-name">AINE tópico (diclofenaco 0.1%)</div><div class="drug-ci">Si moderada-grave</div></div><div class="drug-dose">c/6h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Loteprednol 0.5% o fluorometolona 0.1%</div></div><div class="drug-dose">c/6h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Ibuprofeno 400-600 mg VO</div><div class="drug-ci">Con alimentos. Alternativa a tópicos</div></div><div class="drug-dose">c/8h × 10-14 días</div></div>
+      <div class="section-h">Seguimiento</div>
+      <ul class="bullet-list">
+        <li>Puede recidivar en mismo ojo o contralateral</li>
+        <li>Si recurrencias → estudiar enf. sistémica (VSG, PCR, FR, ANA, ANCA)</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 5.6</div>
+    </div>
+    <div class="tab-content" id="es3">
+      <span class="badge badge-red">Escleritis — buscar enf. sistémica</span>
+      <div class="section-h">Estudios</div>
+      <ul class="bullet-list">
+        <li>Hemograma, creatinina, VSG, PCR, ácido úrico, RPR/VDRL, ANCA, FR, anti-CCP, ANA</li>
+        <li>Eco-B en modo B → signo de la T en escleritis posterior</li>
+        <li>Evaluación reumatológica si no hay diagnóstico sistémico previo</li>
+      </ul>
+      <div class="section-h">Tratamiento según tipo</div>
+      <div class="section-h" style="margin-top:8px">Difusa / nodular</div>
+      <div class="drug-row"><div><div class="drug-name">Naproxeno 250-500 mg VO</div><div class="drug-ci">Con alimentos. Probar distintos AINEs antes de escalar</div></div><div class="drug-dose">c/12h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Prednisona 60-80 mg VO</div><div class="drug-ci">Si no responde a AINEs. Reducir 20 mg/día cada semana</div></div><div class="drug-dose">1/día</div></div>
+      <div class="drug-row"><div><div class="drug-name">Metilprednisolona 1 g/día IV × 3 días</div><div class="drug-ci">Preferible a prednisona &gt;80 mg por menor riesgo de necrosis ósea</div></div><div class="drug-dose">Si grave</div></div>
+      <div class="section-h" style="margin-top:8px">Necrosante</div>
+      <ul class="bullet-list">
+        <li>Inmunosupresores urgentes (ciclofosfamida, metotrexato, anti-TNF) — coordinar con reumatólogo</li>
+        <li><strong>NO esteroides perioculares</strong> en escleritis necrosante — riesgo de perforación</li>
+      </ul>
+      <div class="alert-red">⚠ Escleritis necrosante + artritis reumatoide → mayor mortalidad por arteritis coronaria → derivar urgente a reumatología<br>⚠ NUNCA inyecciones perioculares de triamcinolona en escleritis necrosante</div>
+      <div class="section-h" style="margin-top:8px">Posterior</div>
+      <ul class="bullet-list">
+        <li>AINE VO o corticoides sistémicos. Consultar especialista en retina/uveítis</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 5.7</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title" data-cat="ant">🔵 Segmento anterior</div>
+
+<div class="card cat-ant" data-cat="ant" data-search="queratopatía punteada superficial QPS epitelial fluoresceína ojo seco lentes contacto blefaritis toxicidad">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🔵</div>
+    <div class="card-info"><div class="card-title">Queratopatía punteada superficial (QPS)</div><div class="card-sub">Defectos epiteliales · Patrón orienta etiología</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,&#39;qps1&#39;)">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;qps2&#39;)">💊 Fármacos</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;qps3&#39;)">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;qps4&#39;)">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="qps1">
+      <div class="section-h">Patrón de tinción → etiología</div>
+      <table class="grade-table">
+        <tbody><tr><th>Localización</th><th>Pensar en</th></tr>
+        <tr><td>Superior</td><td>LC, cuerpo extraño bajo párpado, síndrome párpado flácido, tracoma</td></tr>
+        <tr><td>Interpalpebral</td><td>Ojo seco, queratopatía neurotrófica, UV, exposición</td></tr>
+        <tr><td>Inferior</td><td>Blefaritis, toxicidad de colirios, triquiasis, entropión</td></tr>
+        <tr><td>Difusa</td><td>Conjuntivitis, toxicidad, enfermedad viral</td></tr>
+      </tbody></table>
+      <div class="section-h">Pasos</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Tinción con fluoresceína + lámpara de hendidura — evaluar patrón</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Evertir párpados — buscar cuerpo extraño</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Tratar la causa de base</span></li>
+      </ol>
+    </div>
+    <div class="tab-content" id="qps2">
+      <div class="section-h">QPS leve sin LC</div>
+      <div class="drug-row"><div><div class="drug-name">Lágrimas sin conservantes</div></div><div class="drug-dose">c/6h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Pomada lubricante</div></div><div class="drug-dose">Al acostarse</div></div>
+      <div class="section-h">QPS moderada-grave sin LC</div>
+      <div class="drug-row"><div><div class="drug-name">Lágrimas sin conservantes</div></div><div class="drug-dose">c/2h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Bacitracina/polimixina B pomada</div><div class="drug-ci">o eritromicina</div></div><div class="drug-dose">c/6h × 3-5d</div></div>
+      <div class="drug-row"><div><div class="drug-name">Ciclopentolato 1%</div><div class="drug-ci">Si hay dolor o fotofobia intensa</div></div><div class="drug-dose">c/8h</div></div>
+      <div class="section-h">Con LC — siempre suspender LC</div>
+      <div class="drug-row"><div><div class="drug-name">Fluoroquinolona tópica</div><div class="drug-ci">Si QPS confluente o moderada-grave</div></div><div class="drug-dose">c/4-6h</div></div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 4.1</div>
+    </div>
+    <div class="tab-content" id="qps3">
+      <div class="alert-red">NUNCA prescribir colirios anestésicos para uso domiciliario — inhiben cicatrización y pueden causar úlceras graves</div>
+      <div class="alert-red">NO poner parche en QPS asociada a LC — riesgo de úlcera infecciosa grave</div>
+      <div class="alert-yellow">Portador de LC con QPS → NO LC hasta resolución completa</div>
+    </div>
+    <div class="tab-content" id="qps4">
+      <div class="section-h">QPS de Thygeson</div>
+      <ul class="bullet-list">
+        <li>Bilateral, recurrente, lesiones epiteliales sin inyección conjuntival</li>
+        <li>Tratamiento: lubricantes, loteprednol 0.5% en brotes</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-ant" data-cat="ant" data-search="queratopatía filamentosa hebras moco córnea ojo seco acetilcisteína lente vendaje">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🧵</div>
+    <div class="card-info"><div class="card-title">Queratopatía filamentosa</div><div class="card-sub">Hebras de moco en córnea · Ojo seco · Acetilcisteína</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,&#39;qf1&#39;)">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;qf2&#39;)">💊 Fármacos</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;qf3&#39;)">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;qf4&#39;)">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="qf1">
+      <div class="section-h">Reconocer</div>
+      <ul class="bullet-list">
+        <li>Hebras de células epiteliales + moco adheridas a superficie corneal</li>
+        <li>Se tiñen con fluoresceína — muy dolorosas</li>
+        <li>Causa más frecuente: ojo seco severo</li>
+      </ul>
+      <div class="section-h">Pasos</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Identificar y tratar la causa de base (ojo seco, QLS, postoperatorio)</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Debridamiento de filamentos con proparacaína + pinzas finas bajo BMC</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Lubricación intensa</span></li>
+      </ol>
+    </div>
+    <div class="tab-content" id="qf2">
+      <div class="drug-row"><div><div class="drug-name">Lágrimas sin conservantes</div></div><div class="drug-dose">c/2-4h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Acetilcisteína 10% colirio</div><div class="drug-ci">Preparar en farmacia magistral</div></div><div class="drug-dose">c/6h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Oclusión de puntos lagrimales</div></div><div class="drug-dose">—</div></div>
+      <div class="drug-row"><div><div class="drug-name">Lente de contacto blanda vendaje</div><div class="drug-ci">Si síntomas intensos o falla tratamiento — con ATB profiláctico</div></div><div class="drug-dose">Uso extendido</div></div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 4.4</div>
+    </div>
+    <div class="tab-content" id="qf3">
+      <div class="alert-yellow">El debridamiento alivia pero los filamentos recurren si no se trata la causa</div>
+      <div class="alert-blue">Si no mejora en 1-4 semanas → repetir debridamiento o considerar LC vendaje</div>
+    </div>
+    <div class="tab-content" id="qf4">
+      <div class="section-h">Etiologías</div>
+      <ul class="bullet-list">
+        <li>Ojo seco severo (más frecuente)</li>
+        <li>Queratoconjuntivitis límbica superior (QLS)</li>
+        <li>Erosiones corneales recurrentes</li>
+        <li>Postoperatorio / posttraumático</li>
+        <li>Queratopatía neurotrófica</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-ant" data-cat="ant" data-search="queratopatía en banda calcio córnea EDTA quelación uveítis crónica AIJ hipercalcemia">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">➖</div>
+    <div class="card-info"><div class="card-title">Queratopatía en banda</div><div class="card-sub">Depósito cálcico corneal · EDTA · Uveítis crónica</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,&#39;qb1&#39;)">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;qb2&#39;)">💊 Fármacos</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;qb3&#39;)">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;qb4&#39;)">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="qb1">
+      <div class="section-h">Reconocer</div>
+      <ul class="bullet-list">
+        <li>Placa de calcio en córnea a nivel de membrana de Bowman — zona interpalpebral</li>
+        <li>Aspecto de "queso suizo" (agujeros en la placa)</li>
+        <li>Comienza en hora 3 y 9, separado del limbo por córnea sana</li>
+      </ul>
+      <div class="section-h">Pasos</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Si asintomática → solo lubricación y seguimiento</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Si sintomática o afecta la visión → quelación con EDTA</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Buscar causa sistémica: calcemia, fosfatemia, creatinina</span></li>
+      </ol>
+    </div>
+    <div class="tab-content" id="qb2">
+      <div class="section-h">Leve (solo molestias)</div>
+      <div class="drug-row"><div><div class="drug-name">Lágrimas sin conservantes</div></div><div class="drug-dose">c/4-6h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Lente vendaje</div><div class="drug-ci">Para comodidad</div></div><div class="drug-dose">—</div></div>
+      <div class="section-h">Grave (obstruye visión o irritación intensa)</div>
+      <div class="drug-row"><div><div class="drug-name">Quelación con EDTA 3-4%</div><div class="drug-ci">Farmacia magistral — bajo BMC o microscopio quirúrgico</div></div><div class="drug-dose">Procedimiento</div></div>
+      <div class="drug-row"><div><div class="drug-name">Post-quelación: pomada ATB + ciclopentolato 1%</div></div><div class="drug-dose">24h con parche</div></div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 4.10</div>
+    </div>
+    <div class="tab-content" id="qb3">
+      <div class="alert-yellow">Recurrencia frecuente — puede repetirse la quelación</div>
+      <div class="alert-blue">Cicatriz estromal residual post-EDTA → puede tratarse con QFT (queratectomía fotorrefractivacon láser excímero)</div>
+    </div>
+    <div class="tab-content" id="qb4">
+      <div class="section-h">Etiologías sistémicas a descartar</div>
+      <ul class="bullet-list">
+        <li>Hipercalcemia (hiperparatiroidismo, sarcoidosis, intoxicación vit D)</li>
+        <li>Insuficiencia renal / Hiperfosfatemia</li>
+        <li>Gota</li>
+      </ul>
+      <div class="section-h">Etiologías oculares más frecuentes</div>
+      <ul class="bullet-list">
+        <li>Uveítis crónica (especialmente AIJ)</li>
+        <li>Glaucoma de larga evolución</li>
+        <li>Ojo seco crónico / tisis bulbar</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-ant" data-cat="ant" data-search="úlcera corneal infectada queratitis bacteriana raspado cultivo">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🧫</div>
+    <div class="card-info">
+      <div class="card-title">Úlcera corneal infectada</div>
+      <div class="card-sub">Queratitis bacteriana · Criterios de cultivo</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this, &#39;uc1&#39;)">Evaluación</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;uc2&#39;)">Cultivo</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;uc3&#39;)">Tratamiento</div>
+    </div>
+    <div class="tab-content active" id="uc1">
+      <div class="section-h">Anamnesis clave</div>
+      <ul class="bullet-list">
+        <li>Tiempo evolución, mecanismo (vegetal, agua sucia, lago, tierra)</li>
+        <li>Uso de LC — tipo, frecuencia, higiene, uso nocturno</li>
+        <li>Cirugía reciente, corticoides, inmunosupresión</li>
+        <li>Pat. sistémica, tratamientos tópicos previos</li>
+      </ul>
+      <div class="section-h">BMC — documentar</div>
+      <ul class="bullet-list">
+        <li>Localización, extensión, profundidad del infiltrado</li>
+        <li>Bordes (bien definidos → Staph; plumosos → hongo; anular → Acanthamoeba)</li>
+        <li>Hipopión, Tyndall, PIO</li>
+      </ul>
+    </div>
+    <div class="tab-content" id="uc2">
+      <div class="section-h">Indicaciones de raspado corneal</div>
+      <ul class="bullet-list">
+        <li>Absceso central &gt; 1 mm</li>
+        <li>Absceso periférico &gt; 2 mm</li>
+        <li>Adelgazamiento corneal</li>
+        <li>Infiltrado profundo estromal</li>
+        <li>No respuesta al tratamiento en 48h</li>
+        <li>Sospecha de organismo atípico (LC, vegetal, agua, LASIK)</li>
+      </ul>
+      <div class="alert-blue">💡 También cultivar LC y estuche si portador</div>
+      <div class="section-h">Contexto → organismo probable</div>
+      <ul class="bullet-list">
+        <li><strong>LC blando diario</strong> → Pseudomonas (rápido, supurativo, hipopión)</li>
+        <li><strong>Vegetal/tierra</strong> → hongos filamentosos (bordes plumosos, satélites)</li>
+        <li><strong>LC + natación/sauna</strong> → Acanthamoeba (muy doloroso, perineural)</li>
+        <li><strong>Ojo seco/inmunosuprimido</strong> → Candida</li>
+      </ul>
+    </div>
+    <div class="tab-content" id="uc3">
+      <div class="section-h">Tratamiento empírico (mientras esperamos cultivo)</div>
+      <div class="drug-row"><div><div class="drug-name">Fluoroquinolona (moxifloxacino o cipro)</div><div class="drug-ci">Cipro precaución defecto epitelial grande</div></div><div class="drug-dose">c/1h inicial</div></div>
+      <div class="drug-row"><div><div class="drug-name">Ciclopentolato 1%</div></div><div class="drug-dose">c/8h</div></div>
+      <div class="alert-red">⚠ NO corticoides hasta tener organismo identificado<br>⚠ Suspender LC inmediatamente</div>
+      <div class="section-h">Internación si</div>
+      <ul class="bullet-list">
+        <li>Ulcera central amenazante, hipopión grande, sospecha perforación</li>
+        <li>No cumplimiento o seguimiento posible</li>
+        <li>No respuesta a antibióticos VO</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 4.11</div>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-ant" data-cat="ant" data-search="herpes queratitis herpética zóster dendrita aciclovir ganciclovir">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🦠</div>
+    <div class="card-info">
+      <div class="card-title">Herpes ocular</div>
+      <div class="card-sub">VHS + VVZ · Queratitis · Uveítis hipertensiva</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this, &#39;h1&#39;)">VHS epitelial</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;h2&#39;)">VHS estromal</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;h3&#39;)">Uvéitis/HTA</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;h4&#39;)">Herpes zóster</div>
+    </div>
+    <div class="tab-content active" id="h1">
+      <span class="badge badge-blue">VHS — enfermedad epitelial</span>
+      <div class="section-h">Formas clínicas</div>
+      <ul class="bullet-list">
+        <li><strong>Dendrítica</strong> — úlcera ramificada lineal con bulbos terminales en maza, se tiñe con fluoresceína</li>
+        <li><strong>Geográfica</strong> — úlcera ameboide grande con borde dendrítico</li>
+        <li>Bordes elevados, células hinchadas que tiñen con rosa de Bengala</li>
+        <li>Sensibilidad corneal disminuida</li>
+      </ul>
+      <div class="section-h">Tratamiento</div>
+      <div class="drug-row"><div><div class="drug-name">Ganciclovir 0,15% gel</div></div><div class="drug-dose">5 veces/día x 7-10 días</div></div>
+      <div class="drug-row"><div><div class="drug-name">Aciclovir 400 mg VO</div></div><div class="drug-dose">5 veces/día x 7-10 días</div></div>
+      <div class="drug-row"><div><div class="drug-name">Ciclopentolato 1%</div></div><div class="drug-dose">c/8h si reacción CA</div></div>
+      <div class="alert-red">⚠ NO esteroides tópicos en enfermedad epitelial activa</div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 4.15</div>
+    </div>
+    <div class="tab-content" id="h2">
+      <span class="badge badge-orange">VHS — enfermedad estromal</span>
+      <div class="section-h">Queratitis disciforme (no necrosante)</div>
+      <ul class="bullet-list">
+        <li>Edema estromal discoide, epitelio intacto</li>
+        <li>Iritis leve con precipitados granulomatosos localizados</li>
+        <li>PIO puede estar elevada</li>
+      </ul>
+      <div class="section-h">Tratamiento disciforme</div>
+      <div class="drug-row"><div><div class="drug-name">Prednisolona 1%</div></div><div class="drug-dose">c/4-6h reducir lento</div></div>
+      <div class="drug-row"><div><div class="drug-name">Aciclovir 400 mg VO</div><div class="drug-ci">Profilaxis antiviral siempre con esteroide</div></div><div class="drug-dose">2 veces/día</div></div>
+      <div class="drug-row"><div><div class="drug-name">Ciclopentolato 1%</div></div><div class="drug-dose">c/8h</div></div>
+      <div class="alert-red">⚠ NO análogos de prostaglandinas (asociados a recurrencia herpética)</div>
+      <div class="section-h">Queratitis intersticial necrosante</div>
+      <ul class="bullet-list">
+        <li>Infiltrados estromales múltiples ± defecto epitelial, hipopión, neovascularización</li>
+        <li>Descartar siempre sobreinfección bacteriana</li>
+        <li>Tratar igual que disciforme grave + antibiótico tópico profiláctico</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 4.15</div>
+    </div>
+    <div class="tab-content" id="h3">
+      <span class="badge badge-yellow">Queratouvéitis herpética hipertensiva</span>
+      <div class="section-h">Evaluación</div>
+      <ul class="bullet-list">
+        <li>Anamnesis: episodios previos, inmunodeficiencia, zóster, parestesias</li>
+        <li>BMC: tipo de lesión, profundidad estromal, sensibilidad corneal, Tyndall, PRC inferiores</li>
+        <li>FO: papilitis o necrosis retiniana → documentar</li>
+      </ul>
+      <div class="section-h">Tratamiento</div>
+      <div class="drug-row"><div><div class="drug-name">Aciclovir 400 mg VO</div></div><div class="drug-dose">5/día x 7-10 días</div></div>
+      <div class="drug-row"><div><div class="drug-name">Prednisolona 1%</div><div class="drug-ci">Solo si NO hay úlcera epitelial activa</div></div><div class="drug-dose">c/6h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Ciclopentolato 1%</div></div><div class="drug-dose">c/8h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Timolol 0,5%</div><div class="drug-ci">Si PIO elevada — NO prostaglandinas</div></div><div class="drug-dose">c/12h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Aciclovir 400 mg VO profilaxis</div></div><div class="drug-dose">c/12h crónico</div></div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 4.15 + Cap. 9.7</div>
+    </div>
+    <div class="tab-content" id="h4">
+      <span class="badge badge-purple">Herpes Zóster Oftálmico (HZO)</span>
+      <div class="section-h">Clínica</div>
+      <ul class="bullet-list">
+        <li>Vesículas dermatómicas V1 unilaterales, no cruzan línea media</li>
+        <li><strong>Signo de Hutchinson</strong> (punta nariz afectada) → mayor riesgo ocular</li>
+        <li>Puede causar QPS, seudodendritas, queratitis estromal, uveítis, escleritis, parálisis PC, retinitis</li>
+      </ul>
+      <div class="section-h">Tratamiento</div>
+      <div class="drug-row"><div><div class="drug-name">Valaciclovir 1000 mg VO</div></div><div class="drug-dose">3/día x 7-10 días</div></div>
+      <div class="drug-row"><div><div class="drug-name">Prednisolona 1%</div><div class="drug-ci">Para queratitis estromal/uveítis — reducción muy lenta (meses)</div></div><div class="drug-dose">c/4-6h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Ciclopentolato 1%</div><div class="drug-ci">Para uveítis — EVITAR prostaglandinas</div></div><div class="drug-dose">c/8h</div></div>
+      <div class="alert-yellow">⚠ Retinitis → aciclovir 10 mg/kg IV c/8h x 1 semana + prednisona 60 mg/día</div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 4.16</div>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-ant" data-cat="ant" data-search="quemadura química ácido álcali lavado">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🔥</div>
+    <div class="card-info">
+      <div class="card-title">Quemadura química</div>
+      <div class="card-sub">Urgencia máxima · Tratar ANTES de medir AV</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this, &#39;qq1&#39;)">Tratamiento</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;qq2&#39;)">Clasificación</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;qq3&#39;)">Seguimiento</div>
+    </div>
+    <div class="tab-content active" id="qq1">
+      <span class="badge badge-red">URGENCIA REAL — MINUTOS IMPORTAN</span>
+      <div class="section-h">Inmediato</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text"><strong>Anestesia tópica</strong> — proparacaína antes de lavar</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Lavado copioso SF o Ringer <strong>mínimo 30 min</strong> + eversión palpebral + limpieza fondos de saco con hisopo</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Desbridar tejido necrótico si hay</span></li>
+        <li><span class="step-num">4</span><span class="step-text">Medir <strong>pH</strong> en FDS inferior (esperar 5-10 min) → continuar irrigación hasta pH 7–7,4</span></li>
+      </ol>
+      <div class="alert-red">⚠ NO usar soluciones ácidas para neutralizar álcalis ni viceversa</div>
+      <div class="section-h">Medicación</div>
+      <div class="drug-row"><div><div class="drug-name">Ciprofloxacina</div><div class="drug-ci">Precaución defecto epitelial grande (precipita)</div></div><div class="drug-dose">c/6h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Prednisolona 1%</div></div><div class="drug-dose">c/6h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Ciclopentolato 1%</div><div class="drug-ci">EVITAR fenilefrina si isquemia límbica</div></div><div class="drug-dose">c/8h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Gel/lágrimas sin conservantes</div></div><div class="drug-dose">c/1-2h</div></div>
+      <div class="section-h">Casos graves — agregar <span class="diff-badge diff-wills">Wills</span></div>
+      <ul class="bullet-list">
+        <li>Doxiciclina 100 mg VO c/12h + Vitamina C → ↓ colagenólisis</li>
+        <li>PIO elevada: acetazolamida 250 mg c/6h ± timolol 0.5% c/12h (evitar agonistas α)</li>
+        <li>Membrana amniótica (ProKera) si riesgo de simbléfaron</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 3.1</div>
+    </div>
+    <div class="tab-content" id="qq2">
+      <div class="section-h">Clasificación de Roper-Hall</div>
+      <table class="grade-table">
+        <tbody><tr><th>Grado</th><th>Córnea</th><th>Isquemia límbica</th></tr>
+        <tr><td>I</td><td>Transparente</td><td>Sin isquemia</td></tr>
+        <tr><td>II</td><td>Lev. turbia, iris visible</td><td>&lt; 1/3</td></tr>
+        <tr><td>III</td><td>Turbia, iris oculto</td><td>1/3 – 2/3</td></tr>
+        <tr><td>IV</td><td>Opaca &gt;50%</td><td>&gt; 3/4</td></tr>
+      </tbody></table>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 3.1</div>
+    </div>
+    <div class="tab-content" id="qq3">
+      <ul class="bullet-list">
+        <li><strong>Leve-moderada:</strong> control 24h, luego cada pocos días hasta cicatrización</li>
+        <li><strong>Grave:</strong> diario — reducir esteroides a los 7-10 días (riesgo queratólisis)</li>
+        <li>Si necesario prolongar antiinflamatorio: cambiar a acetato de medroxiprogesterona 1% (no queratolítico)</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 3.1</div>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-ant" data-cat="ant" data-search="perforado penetrante cuerpo extraño intraocular Seidel rotura globo endoftalmitis">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🔬</div>
+    <div class="card-info">
+      <div class="card-title">Traumatismo ocular / Perforado</div>
+      <div class="card-sub">Herida penetrante · CEIO · Endoftalmitis</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn" onclick="switchTab(this, &#39;p1&#39;)">Tipos y signos</div>
+      <div class="tab-btn active" onclick="switchTab(this, &#39;p2&#39;)">Manejo urgente</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;p3&#39;)">CEIO</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;p4&#39;)">Endoftalmitis</div>
+    </div>
+    <div class="tab-content" id="p1">
+      <div class="section-h">Clasificación</div>
+      <ul class="bullet-list">
+        <li><strong>Contusa</strong> — trauma sin abertura pared ocular (hipema, luxación cristalino, DR)</li>
+        <li><strong>Penetrante</strong> — abertura de pared ocular, una entrada</li>
+        <li><strong>Perforante</strong> — entrada y salida, dos heridas</li>
+        <li><strong>CEIO</strong> — objeto retenido intraocular</li>
+      </ul>
+      <div class="section-h">Signos de sospecha de globo abierto</div>
+      <ul class="bullet-list">
+        <li>Prueba de Seidel positiva (fluoresceína diluida en el sitio de la herida)</li>
+        <li>CA plana o muy profunda (asimétrica)</li>
+        <li>Hipema con deformación pupilar</li>
+        <li>Prolapso uveal (tejido marrón en la herida)</li>
+        <li>PIO muy baja (&lt;6 mmHg)</li>
+        <li>Hemorragia subconjuntival ampollosa intensa</li>
+      </ul>
+      <div class="alert-red">⚠ Si se sospecha globo abierto: NO aplicar presión, NO tonometría de aplanamiento, NO gonioscopia</div>
+    </div>
+    <div class="tab-content active" id="p2">
+      <span class="badge badge-red">EMERGENCIA QUIRÚRGICA</span>
+      <div class="section-h">Qué NO hacer</div>
+      <ul class="bullet-list">
+        <li>NO comprimir el globo en ningún momento</li>
+        <li>NO extraer cuerpos extraños (riesgo de evisceración)</li>
+        <li>NO instilar colirios diagnósticos en globo abierto sospechado</li>
+        <li>NO ocluir con vendaje compresivo</li>
+      </ul>
+      <div class="section-h">Manejo</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Cubrir con protector rígido (sin comprimir)</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Ayuno estricto (cirugía)</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Antibiótico sistémico IV (moxifloxacino o ceftriaxona + vancomicina)</span></li>
+        <li><span class="step-num">4</span><span class="step-text">Antieméticos (evitar maniobras de Valsalva)</span></li>
+        <li><span class="step-num">5</span><span class="step-text">TC órbita (proyecciones axial + coronal, cortes 1mm) para descartar CEIO metálico antes de RM</span></li>
+        <li><span class="step-num">6</span><span class="step-text">Derivación urgente a quirófano</span></li>
+      </ol>
+      <div class="alert-yellow">⚠ TC antes que RM — descartar metal primero</div>
+    </div>
+    <div class="tab-content" id="p3">
+      <span class="badge badge-orange">Cuerpo extraño intraocular (CEIO)</span>
+      <div class="section-h">Tolerancia del material</div>
+      <ul class="bullet-list">
+        <li><strong>Mal tolerados</strong> (→ infección/inflamación): madera, materia vegetal, cobre puro</li>
+        <li><strong>Bastante tolerados</strong>: latón, bronce (menos 85% cobre)</li>
+        <li><strong>Bien tolerados (inertes)</strong>: vidrio, piedra, plástico, hierro, acero, aluminio, plomo</li>
+      </ul>
+      <div class="section-h">Estudio</div>
+      <ul class="bullet-list">
+        <li>TC con cortes finos (1mm) — primera línea siempre</li>
+        <li>NO RM si sospecha metálico</li>
+        <li>Eco-B si medios no transparentes</li>
+      </ul>
+      <div class="alert-blue">💡 Madera puede verse como "aire" en TC → avisar al radiólogo, medir UH</div>
+    </div>
+    <div class="tab-content" id="p4">
+      <span class="badge badge-red">Endoftalmitis postraumática</span>
+      <div class="section-h">Sospechar si</div>
+      <ul class="bullet-list">
+        <li>Dolor intenso creciente post-trauma</li>
+        <li>Hipopión, vitritis, disminución de AV luego de cirugía/trauma</li>
+        <li>CEIO de material vegetal (riesgo bacterias y hongos)</li>
+      </ul>
+      <div class="section-h">Tratamiento</div>
+      <ul class="bullet-list">
+        <li>Inyecciones intravítreas: vancomicina 1 mg + ceftazidima 2,25 mg</li>
+        <li>Vitrectomía + inyección si vitritis severa</li>
+        <li>Antibiótico sistémico IV de amplio espectro</li>
+        <li>Cultivos de humor vítreo antes de antibióticos si es posible</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 3.14, 3.15, 3.12</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title" data-cat="glau">🟣 Glaucoma</div>
+
+<div class="card cat-glau" data-cat="glau" data-search="glaucoma agudo ángulo estrecho timolol brimonidina dorzolamida iridotomía">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">👁</div>
+    <div class="card-info">
+      <div class="card-title">Glaucoma agudo de ángulo estrecho</div>
+      <div class="card-sub">+ Variantes: facomorfo · sulfonamidas · CI fármacos</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this, &#39;ga1&#39;)">Tratamiento</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;ga2&#39;)">CI fármacos</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;ga3&#39;)">Variantes</div>
+    </div>
+    <div class="tab-content active" id="ga1">
+      <span class="badge badge-orange">Urgencia alta — horas importan</span>
+      <div class="section-h">Clínica</div>
+      <ul class="bullet-list">
+        <li>Dolor agudo, náuseas/vómitos, halos coloreados, cefalea frontal</li>
+        <li>PIO muy elevada (&gt;40), edema epitelial corneal, midriasis media arreactiva, CA poco profunda</li>
+      </ul>
+      <div class="section-h">Tratamiento médico</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text"><strong>Dorzolamida + brimonidina</strong> c/15 min x 3 rondas (separadas 15 min)</span></li>
+        <li><span class="step-num">2</span><span class="step-text"><strong>Timolol 0,5%</strong> una dosis</span></li>
+        <li><span class="step-num">3</span><span class="step-text"><strong>Prednisolona 1%</strong> como coadyuvante</span></li>
+        <li><span class="step-num">4</span><span class="step-text">Control PIO 1h → si no baja: <strong>acetazolamida 250-500 mg IV</strong> (o 2 comp VO)</span></li>
+        <li><span class="step-num">5</span><span class="step-text">Si refractario: <strong>manitol 1-2 g/kg IV</strong> en 45 min</span></li>
+      </ol>
+      <div class="alert-red">⚠ EVITAR fenilefrina si isquemia límbica<br>⚠ Manitol CI en ICC, insuf. renal, hemorragia intracraneal</div>
+      <div class="section-h">Tratamiento definitivo</div>
+      <ul class="bullet-list">
+        <li><strong>Iridotomía periférica con láser YAG</strong> cuando córnea transparente (1-5 días)</li>
+        <li>Tratar también ojo contralateral (riesgo 40-80% de crisis en 5-10 años)</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 9.4</div>
+    </div>
+    <div class="tab-content" id="ga2">
+      <div class="section-h">Contraindicaciones de hipotensores</div>
+      <table class="grade-table">
+        <tbody><tr><th>Fármaco</th><th>CI principales</th><th>EA</th></tr>
+        <tr><td><strong>Prostaglandinas</strong> (latanoprost)</td><td>Embarazo, uveítis activa, EMQ</td><td>Pigmentación iris/piel, hipertricosis</td></tr>
+        <tr><td><strong>BB</strong> (timolol)</td><td>Asma, EPOC, BAV, bradicardia, ICC, MG</td><td>Broncoespasmo, hipoTA, depresión SNC</td></tr>
+        <tr><td><strong>α2</strong> (brimonidina)</td><td>&lt;5 años, IMAOs</td><td>Crisis HTA con IMAOs</td></tr>
+        <tr><td><strong>IAC tópicos</strong> (dorzolamida)</td><td>Alergia sulfamidas, Fuchs</td><td>Acidosis, hipoK, anemia aplásica</td></tr>
+        <tr><td><strong>IAC sistémico</strong> (acetazolamida)</td><td>Insuf. renal, digital</td><td>Astenia, confusión, parestesias, STJ</td></tr>
+        <tr><td><strong>Manitol</strong></td><td>ICC, insuf. renal, HIC</td><td>HiperNa, expansión vol.</td></tr>
+      </tbody></table>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 9.4</div>
+    </div>
+    <div class="tab-content" id="ga3">
+      <div class="section-h">Glaucoma facomorfo</div>
+      <ul class="bullet-list">
+        <li>Cristalino grande provoca cierre angular por bloqueo pupilar</li>
+        <li>Mismo manejo médico + extracción de cristalino tan pronto como esté despejado</li>
+      </ul>
+      <div class="section-h">Cierre angular por topiramato/sulfonamidas</div>
+      <ul class="bullet-list">
+        <li>Cierre bilateral por derrame supraciliar + edema cuerpo ciliar</li>
+        <li><strong>NO usar IAC</strong> (misma clase farmacológica)</li>
+        <li>Suspender fármaco responsable inmediatamente</li>
+        <li>Atropina 1% (cicloplejía → rotación posterior del cuerpo ciliar)</li>
+        <li>NO hacer iridotomía (no es por bloqueo pupilar)</li>
+        <li>Corticoides IV si respuesta insuficiente</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 9.4</div>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-glau" data-cat="glau" data-search="glaucoma neovascular rubeosis iridis anti-VEGF fotocoagulación panretiniana diabético">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🌐</div>
+    <div class="card-info">
+      <div class="card-title">Glaucoma neovascular</div>
+      <div class="card-sub">Estadios · Anti-VEGF · FPR</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this, &#39;gn1&#39;)">Estadios y clínica</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;gn2&#39;)">Tratamiento</div>
+    </div>
+    <div class="tab-content active" id="gn1">
+      <span class="badge badge-orange">Urgencia — 1-2 días</span>
+      <div class="section-h">Estadios</div>
+      <table class="grade-table">
+        <tbody><tr><th>Estadio</th><th>Hallazgo</th><th>PIO</th></tr>
+        <tr><td>1</td><td>Neovasos borde pupilar y/o MT, sin glaucoma</td><td>Normal</td></tr>
+        <tr><td>2</td><td>Igual + PIO elevada (ángulo aún abierto)</td><td>↑↑</td></tr>
+        <tr><td>3</td><td>SAP, cierre angular parcial o total</td><td>↑↑↑</td></tr>
+      </tbody></table>
+      <div class="section-h">Etiologías principales</div>
+      <ul class="bullet-list">
+        <li>Retinopatía diabética proliferativa (más frecuente)</li>
+        <li>OVCR isquémica</li>
+        <li>OACR</li>
+        <li>Síndrome isquémico ocular (estenosis carotídea)</li>
+      </ul>
+    </div>
+    <div class="tab-content" id="gn2">
+      <div class="section-h">Tratamiento médico</div>
+      <div class="drug-row"><div><div class="drug-name">Atropina 1%</div><div class="drug-ci">↑ flujo uveoescleral → ↓ PIO</div></div><div class="drug-dose">c/8h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Prednisolona 1%</div></div><div class="drug-dose">c/8h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Timolol + dorzolamida + brimonidina</div></div><div class="drug-dose">c/12h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Acetazolamida 250 mg</div></div><div class="drug-dose">c/12h VO</div></div>
+      <div class="alert-red">⚠ NO pilocarpina (altera barrera hematoacuosa)<br>⚠ NO prostaglandinas en fase aguda (↑ inflamación)</div>
+      <div class="section-h">Tratamiento definitivo</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text"><strong>Anti-VEGF IV</strong> (bevacizumab, ranibizumab, aflibercept) → regresión NVI antes de cirugía/láser. Especialmente útil estadios 1-2.</span></li>
+        <li><span class="step-num">2</span><span class="step-text"><strong>FPR (fotocoagulación panretiniana)</strong> → tratar isquemia de base</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Cirugía filtrante (válvula) si NV inactiva y PIO no controlada</span></li>
+        <li><span class="step-num">4</span><span class="step-text">Ciclofotocoagulación solo si bajo potencial visual</span></li>
+      </ol>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 9.14</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title" data-cat="ret">🟠 Retina y vítreo</div>
+
+<div class="card cat-ret" data-cat="ret" data-search="hemovítreo hemorragia vítrea vitrectomía eco modo B desprendimiento retina DVP diabético">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🩸</div>
+    <div class="card-info">
+      <div class="card-title">Hemovítreo</div>
+      <div class="card-sub">Manejo · Indicaciones de vitrectomía · Etiologías</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this, &#39;hv1&#39;)">Manejo</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;hv2&#39;)">Etiologías</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;hv3&#39;)">Vitrectomía</div>
+    </div>
+    <div class="tab-content active" id="hv1">
+      <div class="section-h">Clínica</div>
+      <ul class="bullet-list">
+        <li>Pérdida de visión súbita no dolorosa, "hilitos negros", telarañas, neblina</li>
+        <li>FO: reflejo del fondo ausente o disminuido</li>
+        <li>DPAR leve si hemorragia densa</li>
+      </ul>
+      <div class="section-h">Estudio urgente</div>
+      <ul class="bullet-list">
+        <li>Anamnesis: DBT, HTA, trauma, cirugía reciente, miopía alta</li>
+        <li>Exploración completa: NVI en BMC sin dilatar, PIO</li>
+        <li><strong>Eco-B urgente</strong> → descartar DR, tumor intraocular</li>
+      </ul>
+      <div class="section-h">Manejo</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Reposo físico, <strong>cabecera a 30°</strong> (sangre cae inferiormente)</span></li>
+        <li><span class="step-num">2</span><span class="step-text"><strong>No levantar peso, no esfuerzos, no inclinarse</strong></span></li>
+        <li><span class="step-num">3</span><span class="step-text"><strong>Suspender AAS, AINEs, anticoagulantes</strong> si posible</span></li>
+        <li><span class="step-num">4</span><span class="step-text">Ciclopentolato 1% c/8h</span></li>
+        <li><span class="step-num">5</span><span class="step-text">Eco-B sección retina c/1-3 semanas si persiste</span></li>
+      </ol>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 11.13</div>
+    </div>
+    <div class="tab-content" id="hv2">
+      <div class="section-h">Por frecuencia</div>
+      <ul class="bullet-list">
+        <li><strong>Retinopatía diabética proliferativa</strong> — RDP visible en ojo contralateral</li>
+        <li><strong>DVP agudo</strong> — moscas volantes + destellos previos, mediana edad</li>
+        <li><strong>Desgarro retiniano</strong> — frecuente en HV denso superior</li>
+        <li><strong>ORVR</strong> — paciente añoso hipertenso</li>
+        <li><strong>DMAE neovascular</strong> — cicatriz disciforme, ↓ AV previa</li>
+        <li><strong>Trauma</strong></li>
+        <li><strong>Síndrome de Terson</strong> — HV bilateral tras hemorragia subaracnoidea</li>
+        <li><strong>Tumor intraocular</strong></li>
+      </ul>
+    </div>
+    <div class="tab-content" id="hv3">
+      <div class="section-h">Indicaciones de vitrectomía</div>
+      <ul class="bullet-list">
+        <li>HV + DR o desgarro en eco-B</li>
+        <li>HV no reabsorbido ≥3-6 meses</li>
+        <li>HV + neovascularización del iris (NVI)</li>
+        <li>Glaucoma hemolítico o por células fantasma</li>
+        <li>HV bilateral en DBT → considerar antes de 6 meses</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 11.13</div>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-ret" data-cat="ret" data-search="OACR OVCR oclusión arteria vena central retina rama rojo cereza anti-VEGF FPR ACV">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🔴</div>
+    <div class="card-info">
+      <div class="card-title">Isquemias retinianas</div>
+      <div class="card-sub">OACR · Rama arterial · OVCR · Rama venosa</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn" onclick="switchTab(this, &#39;ir1&#39;)">OACR</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;ir2&#39;)">Rama arterial</div>
+      <div class="tab-btn active" onclick="switchTab(this, &#39;ir3&#39;)">OVCR</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;ir4&#39;)">Rama venosa</div>
+    </div>
+    <div class="tab-content" id="ir1">
+      <span class="badge badge-red">OACR — Urgencia máxima (90-120 min)</span>
+      <div class="section-h">Clínica</div>
+      <ul class="bullet-list">
+        <li>Pérdida súbita e indolora de AV (segundos), hasta percepción luminosa</li>
+        <li>DPAR marcado, arteriolas estrechas</li>
+        <li><strong>Mancha rojo cereza macular</strong> + blanqueamiento retiniano polo posterior</li>
+      </ul>
+      <div class="section-h">Tratamiento (ventana 90-120 min)</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Masaje digital o con lente de contacto</span></li>
+        <li><span class="step-num">2</span><span class="step-text"><strong>Acetazolamida 500 mg IV</strong> o 2 comp 250 mg VO</span></li>
+        <li><span class="step-num">3</span><span class="step-text"><strong>β-bloqueante tópico</strong> (timolol 0,5% o levobunolol)</span></li>
+        <li><span class="step-num">4</span><span class="step-text"><strong>Paracentesis de cámara anterior</strong></span></li>
+      </ol>
+      <div class="alert-yellow">⚠ No hay tratamiento de eficacia demostrada — intentar en ventana</div>
+      <div class="section-h">Derivar SIEMPRE como ACV</div>
+      <ul class="bullet-list">
+        <li>ECG, Eco Doppler carotídeo y cardíaco, TA</li>
+        <li>Lab: VES, PCR, plaquetas (&gt;55 → descartar ACG), glucemia, HbA1c, coagulograma</li>
+      </ul>
+      <div class="section-h">Seguimiento</div>
+      <ul class="bullet-list">
+        <li>Control 1-4 semanas → buscar NVI/NVA/NVP (hasta 20% a las 4 semanas)</li>
+        <li>Si aparece NV → FPR ± anti-VEGF IV</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 11.6</div>
+    </div>
+    <div class="tab-content" id="ir2">
+      <span class="badge badge-orange">Oclusión de rama arterial retiniana</span>
+      <div class="section-h">Diferencias vs OACR</div>
+      <ul class="bullet-list">
+        <li>Pérdida parcial del CV (no total), cambio súbito de visión</li>
+        <li>Blanqueamiento retiniano en distribución de una rama (no polo posterior completo)</li>
+        <li>Puede verse émbolo en bifurcación (placa de Hollenhorst = colesterol, refringente)</li>
+        <li>No hay mancha rojo cereza en la mácula (generalmente)</li>
+      </ul>
+      <div class="section-h">Tratamiento y estudio</div>
+      <ul class="bullet-list">
+        <li>Igual que OACR en la ventana aguda</li>
+        <li>Derivar como ACV (misma evaluación sistémica)</li>
+        <li>Si acompaña edema papilar o retinitis → descartar Bartonella, sífilis, Lyme, toxo</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 11.7</div>
+    </div>
+    <div class="tab-content active" id="ir3">
+      <span class="badge badge-yellow">OVCR — Oclusión vena central</span>
+      <div class="section-h">Clínica</div>
+      <ul class="bullet-list">
+        <li>Pérdida visual no dolorosa, unilateral</li>
+        <li><strong>Hemorragias difusas en 4 cuadrantes</strong> + venas tortuosas/dilatadas</li>
+        <li>Edema de papila, edema macular, exudados algodonosos</li>
+      </ul>
+      <div class="section-h">Tipos</div>
+      <div class="compare-grid">
+        <div class="compare-col"><h4 style="color: #dc2626">Isquémica</h4><ul><li>DPAR presente</li><li>AV ≤ 20/400</li><li>≥6 exudados algodonosos</li><li>Ausencia perfusión en AFIV</li><li>↑ riesgo NVI (rubeosis)</li></ul></div>
+        <div class="compare-col"><h4 style="color: #16a34a">No isquémica</h4><ul><li>Sin DPAR</li><li>AV &gt; 20/400</li><li>Cambios leves</li><li>Mejor pronóstico</li></ul></div>
+      </div>
+      <div class="section-h">Tratamiento</div>
+      <ul class="bullet-list">
+        <li><strong>Edema macular</strong>: anti-VEGF IV (ranibizumab, aflibercept) o Ozurdex (dexametasona implante)</li>
+        <li><strong>NVI/NVA</strong>: FPR urgente ± anti-VEGF</li>
+        <li>Tratar causas sistémicas (HTA, glaucoma, anticonceptivos)</li>
+        <li>AAS 81-325 mg (sin evidencia sólida, pero se recomienda)</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 11.8</div>
+    </div>
+    <div class="tab-content" id="ir4">
+      <span class="badge badge-yellow">Oclusión de rama venosa retiniana (ORVR)</span>
+      <div class="section-h">Diferencias vs OVCR</div>
+      <ul class="bullet-list">
+        <li>Punto ciego sectorial (no pérdida completa)</li>
+        <li>Hemorragias en <strong>un sector</strong>, no cruzan rafe horizontal</li>
+        <li>Asociada a entrecruzamiento AV patológico (HTA, diabetes)</li>
+      </ul>
+      <div class="section-h">Tratamiento</div>
+      <ul class="bullet-list">
+        <li><strong>Edema macular</strong>: anti-VEGF IV primera línea (BRAVO trial)</li>
+        <li>Láser focal macular si edema &gt;3-6 meses y AV &lt;20/40 (segunda línea)</li>
+        <li>Ozurdex o triamcinolona IV como alternativa</li>
+        <li>Neovascularización retiniana → fotocoagulación sectorial del área isquémica</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 11.9</div>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-ret" data-cat="ret" data-search="desgarro rotura retina moscas volantes fotopsias DVP crioterapia láser herradura">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">⚡</div>
+    <div class="card-info"><div class="card-title">Desgarro de retina</div><div class="card-sub">Moscas + fotopsias · Láser/crioterapia urgente</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,&#39;dr1&#39;)">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;dr2&#39;)">💊 Tratamiento</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;dr3&#39;)">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;dr4&#39;)">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="dr1">
+      <div class="section-h">Síntomas de alerta</div>
+      <ul class="bullet-list">
+        <li>Moscas volantes <strong>nuevas o aumentadas</strong> (células pigmentadas en vítreo)</li>
+        <li>Fotopsias (destellos) — tracción vitreorretiniana</li>
+        <li>Sin pérdida visual si no hay hemovítreo o DR asociado</li>
+      </ul>
+      <div class="section-h">Pasos</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Dilatación + oftalmoscopia indirecta con compresión escleral</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Si hay hemovítreo → eco-B para descartar DR</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Desgarro sintomático → tratamiento en 24-72h</span></li>
+        <li><span class="step-num">4</span><span class="step-text">Explicar síntomas de alarma para DR al paciente</span></li>
+      </ol>
+    </div>
+    <div class="tab-content" id="dr2">
+      <div class="section-h">Tratamiento según tipo</div>
+      <ul class="bullet-list">
+        <li><strong>Desgarro sintomático agudo</strong> (herradura, opercular) → láser o crioterapia en 24-72h</li>
+        <li><strong>Desgarro traumático agudo</strong> → tratar siempre</li>
+        <li><strong>Grande &gt;1.5 mm o sobre el ecuador sin DVP</strong> → considerar tratar</li>
+        <li><strong>Agujero atrófico asintomático</strong> → observación en la mayoría</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 11.2</div>
+    </div>
+    <div class="tab-content" id="dr3">
+      <div class="alert-red">Desgarro superior sintomático = mayor riesgo de progresión a DR → tratar urgente</div>
+      <div class="alert-yellow">Instruir al paciente: si aparece "cortina" o sombra en el CV → urgencia inmediata (puede ser DR)</div>
+    </div>
+    <div class="tab-content" id="dr4">
+      <div class="section-h">Factores predisponentes</div>
+      <ul class="bullet-list">
+        <li>Degeneración en empalizada, miopía alta</li>
+        <li>Afaquia o seudofaquia</li>
+        <li>Antecedente de desgarro o DR en el otro ojo</li>
+        <li>Traumatismo</li>
+      </ul>
+      <div class="section-h">Seguimiento</div>
+      <ul class="bullet-list">
+        <li>Post-tratamiento: 1 semana, 1 mes, 3 meses, luego c/6-12 meses</li>
+        <li>Sin tratamiento: c/6-12 meses si factores de riesgo</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-ret" data-cat="ret" data-search="desprendimiento retina regmatógeno exudativo tracción cortina vitrectomía cerclaje retinopexia neumatica fóvea">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🌊</div>
+    <div class="card-info"><div class="card-title">Desprendimiento de retina</div><div class="card-sub">Regmatógeno · Exudativo · Tracción · Urgencia quirúrgica</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,&#39;dret1&#39;)">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;dret2&#39;)">💊 Tratamiento</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;dret3&#39;)">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;dret4&#39;)">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="dret1">
+      <div class="section-h">Síntomas — reconocer</div>
+      <ul class="bullet-list">
+        <li>Destellos + moscas volantes → luego cortina o sombra en CV</li>
+        <li>Si ya afecta fóvea → ↓ AV central</li>
+        <li>DPAR si es extenso</li>
+        <li>PIO más baja en el ojo afectado</li>
+      </ul>
+      <div class="section-h">Pasos urgentes</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Dilatación + oftalmoscopia indirecta completa</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Eco-B si medios no transparentes</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Si amenaza fóvea → reposo en cama y cirugía urgente ese día</span></li>
+        <li><span class="step-num">4</span><span class="step-text">Derivar a retinólogo urgente</span></li>
+      </ol>
+    </div>
+    <div class="tab-content" id="dret2">
+      <div class="section-h">Opciones quirúrgicas (retinólogo)</div>
+      <ul class="bullet-list">
+        <li><strong>Retinopexia neumática</strong> — gas intravítreo + láser/crioterapia (DR seleccionado)</li>
+        <li><strong>Cerclaje escleral</strong> — banda externa sobre la esclera</li>
+        <li><strong>Vitrectomía pars plana</strong> — primera línea en DR complejo</li>
+        <li><strong>DR exudativo</strong> → tratar la causa de base</li>
+      </ul>
+      <div class="section-h">Urgencia según tipo</div>
+      <ul class="bullet-list">
+        <li>DR que amenaza fóvea → <strong>cirugía ese día o al día siguiente</strong></li>
+        <li>DR excéntrico sin comprometer mácula → 7-10 días sin cambio en pronóstico</li>
+        <li>DR crónico → 1 semana si es posible</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 11.3</div>
+    </div>
+    <div class="tab-content" id="dret3">
+      <div class="alert-red">DR que amenaza fóvea → URGENCIA QUIRÚRGICA — reposo en cama inmediato</div>
+      <div class="alert-yellow">Pronóstico visual significativamente peor si el DR ya comprometió la fóvea antes de la cirugía</div>
+      <div class="alert-blue">DR exudativo: la retina desplazada cambia con la posición de la cabeza (líquido subretiniano móvil)</div>
+    </div>
+    <div class="tab-content" id="dret4">
+      <div class="section-h">Tipos</div>
+      <ul class="bullet-list">
+        <li><strong>Regmatógeno:</strong> rotura retiniana → LSR separa retina del EPR. El más frecuente</li>
+        <li><strong>Exudativo:</strong> sin rotura, líquido por ruptura de barrera hematorretiniana (tumor, inflamación, VKH, HT maligna)</li>
+        <li><strong>Tracción:</strong> membranas fibrocelulares (RDP, ROP, toxocariasis) contraen la retina</li>
+      </ul>
+      <div class="section-h">Seguimiento post-cirugía</div>
+      <ul class="bullet-list">
+        <li>1 día → 1 semana → 1 mes → 2-3 meses → c/6-12 meses</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="section-title" data-cat="neuro">🔴 Neuro-oftalmología</div>
+
+<div class="card cat-neuro" data-cat="neuro" data-search="neuritis óptica esclerosis múltiple metilprednisolona DPAR RM desmielinización NOINA">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">⚡</div>
+    <div class="card-info">
+      <div class="card-title">Neuritis óptica y NOINA</div>
+      <div class="card-sub">EM · Pulsos de corticoides · Diferencial</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn" onclick="switchTab(this, &#39;no1&#39;)">Neuritis óptica</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;no2&#39;)">NOINA</div>
+      <div class="tab-btn active" onclick="switchTab(this, &#39;no3&#39;)">Diferencial</div>
+    </div>
+    <div class="tab-content" id="no1">
+      <div class="section-h">Clínica</div>
+      <ul class="bullet-list">
+        <li>Pérdida de visión subaguda (días), máximo en 1 semana, unilateral</li>
+        <li><strong>Dolor orbitario con movimientos oculares</strong> (90%)</li>
+        <li>Pérdida visión de colores, ↓ percepción luminosa</li>
+        <li>Signo de Uhthoff (empeora con calor/ejercicio)</li>
+        <li>Papila: normal 2/3 (retrobulbar) o edematosa 1/3 (papilitis)</li>
+        <li>DPAR en unilaterales</li>
+      </ul>
+      <div class="section-h">Estudio</div>
+      <ul class="bullet-list">
+        <li><strong>RM cráneo + órbitas con gadolinio</strong> — siempre</li>
+        <li>Campo visual (Humphrey)</li>
+        <li>VES, PCR, VDRL, Lyme, Rx tórax (descartar otras causas)</li>
+      </ul>
+      <div class="section-h">Tratamiento según RM</div>
+      <div class="alert-blue">💊 RM con ≥1 lesión desmielinizante</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text"><strong>Metilprednisolona 1 g/día IV x 3 días</strong></span></li>
+        <li><span class="step-num">2</span><span class="step-text">Prednisona 1 mg/kg/día VO x 11 días</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Reducción gradual en 4 días + omeprazol 20 mg/día</span></li>
+      </ol>
+      <div class="alert-blue">📋 RM con ≥2 lesiones → derivar neurología (interferón-β, glatiramer...)</div>
+      <div class="alert-green">✓ RM negativa → pulsos IV opcionales. Repetir RM 3-6 meses</div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 10.14</div>
+    </div>
+    <div class="tab-content" id="no2">
+      <span class="badge badge-orange">NOINA — Neuropatía óptica isquémica no arterítica</span>
+      <div class="section-h">Diferencias clave con neuritis óptica</div>
+      <ul class="bullet-list">
+        <li>Pacientes 40-60 años (más añosos)</li>
+        <li>Pérdida visión <strong>súbita, indolora, no progresiva</strong></li>
+        <li><strong>Sin dolor con movimientos oculares</strong></li>
+        <li>Edema papilar pálido segmentario + hemorragias en llama</li>
+        <li>VSG y PCR normales (diferencia con ACG)</li>
+        <li>Defecto altitudinal en CV (frecuente)</li>
+        <li>"Papila en riesgo" contralateral (pequeña, sin excavación)</li>
+      </ul>
+      <div class="section-h">Factores de riesgo</div>
+      <ul class="bullet-list">
+        <li>HTA, DBT, hiperlipidemia, apnea del sueño</li>
+        <li>Hipotensión nocturna (antihipertensivos nocturnos)</li>
+        <li>Inhibidores PDE-5 (sildenafilo) — advertir a pacientes con factores de riesgo</li>
+      </ul>
+      <div class="section-h">Tratamiento</div>
+      <ul class="bullet-list">
+        <li>Observación (no hay tratamiento eficaz demostrado)</li>
+        <li>Modificar factores de riesgo cardiovascular</li>
+        <li>Evitar antihipertensivos al acostarse</li>
+        <li>Hasta 40% puede mejorar leve en 3-6 meses</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 10.18</div>
+    </div>
+    <div class="tab-content active" id="no3">
+      <div class="section-h">Diagnóstico diferencial</div>
+      <table class="grade-table">
+        <tbody><tr><th></th><th>Neuritis óptica</th><th>NOINA</th><th>ACG</th></tr>
+        <tr><td>Edad</td><td>18-45 años</td><td>40-60 años</td><td>≥55 años</td></tr>
+        <tr><td>Dolor</td><td>Sí (movimiento)</td><td>No</td><td>No (sistémico)</td></tr>
+        <tr><td>Inicio</td><td>Subagudo (días)</td><td>Súbito</td><td>Súbito</td></tr>
+        <tr><td>Papila</td><td>Normal o edema hiperémico</td><td>Edema pálido segmentario</td><td>Edema pálido "color creta"</td></tr>
+        <tr><td>VSG/PCR</td><td>Normales</td><td>Normales</td><td>↑↑↑</td></tr>
+        <tr><td>Tratamiento</td><td>Pulsos IV corticoides</td><td>Observación</td><td>Metilprednisolona IV URGENTE</td></tr>
+      </tbody></table>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 10.14, 10.17, 10.18</div>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-neuro" data-cat="neuro" data-search="arteritis células gigantes ACG VSG PCR biopsia arteria temporal metilprednisolona claudicación mandibular">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🩺</div>
+    <div class="card-info">
+      <div class="card-title">Arteritis de células gigantes (ACG)</div>
+      <div class="card-sub">≥55 años · VSG/PCR urgentes · Corticoides inmediatos</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this, &#39;acg1&#39;)">Clínica</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;acg2&#39;)">Tratamiento</div>
+    </div>
+    <div class="tab-content active" id="acg1">
+      <span class="badge badge-red">Urgencia — tratar ANTES de biopsia</span>
+      <div class="section-h">Síntomas sistémicos (≥55 años)</div>
+      <ul class="bullet-list">
+        <li><strong>Pérdida de visión súbita e indolora</strong>, inicialmente unilateral → puede hacerse bilateral rápidamente</li>
+        <li>Cefalea temporal, claudicación mandibular (dolor masticación)</li>
+        <li>Sensibilidad cuero cabelludo (al peinarse)</li>
+        <li>Dolores musculares proximales (polimialgia reumática)</li>
+        <li>Fiebre, anorexia, pérdida de peso</li>
+      </ul>
+      <div class="section-h">Signos oculares</div>
+      <ul class="bullet-list">
+        <li>DPAR + AV muy disminuida (contar dedos o peor)</li>
+        <li>Papila pálida y edematosa "color creta" ± hemorragias</li>
+        <li>VSG ↑↑, PCR ↑↑, plaquetas ↑</li>
+        <li>Arteria temporal dura, dolorosa, no pulsátil</li>
+        <li>Puede asociar OACR o parálisis de par craneal</li>
+      </ul>
+      <div class="section-h">VSG normal máxima</div>
+      <ul class="bullet-list">
+        <li>Varones: edad/2</li>
+        <li>Mujeres: (edad+10)/2</li>
+      </ul>
+    </div>
+    <div class="tab-content" id="acg2">
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text"><strong>Metilprednisolona 250 mg IV c/6h x 12 dosis</strong> → luego prednisona 80-100 mg/día VO</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Biopsia de arteria temporal mientras el paciente está internado (no esperar)</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Si biopsia positiva: mantener prednisona ~1 mg/kg, reducción progresiva individualizada (meses)</span></li>
+      </ol>
+      <div class="alert-yellow">⚠ No esperar biopsia para iniciar corticoides — el retraso puede causar ceguera bilateral irreversible</div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 10.17</div>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-neuro" data-cat="neuro" data-search="parálisis tercer par craneal III IV VI diplopia ptosis pupila aneurisma angio RM diabetes hipertension">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">👀</div>
+    <div class="card-info"><div class="card-title">Parálisis de pares craneales oculomotores</div><div class="card-sub">III par · IV par · VI par · Diplopía</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,&#39;ppc1&#39;)">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;ppc2&#39;)">💊 Estudios</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;ppc3&#39;)">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;ppc4&#39;)">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="ppc1">
+      <div class="section-h">Identificar el par afectado</div>
+      <table class="grade-table">
+        <tbody><tr><th>Par</th><th>Presentación típica</th><th>Urgencia</th></tr>
+        <tr><td><strong>III par</strong></td><td>Ptosis + exotropía + limitación todos los movimientos salvo abducción</td><td>Alta si afecta pupila</td></tr>
+        <tr><td><strong>IV par</strong></td><td>Diplopía vertical, cabeza inclinada hacia lado contralateral</td><td>Moderada</td></tr>
+        <tr><td><strong>VI par</strong></td><td>Diplopía horizontal, limitación abducción</td><td>Moderada</td></tr>
+      </tbody></table>
+      <div class="section-h">Pasos</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Evaluar pupila — ¿está dilatada y arreactiva? → III par con pupila afectada = emergencia</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Exploración neurológica — buscar otros pares craneales comprometidos</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Medir TA, glucemia, HbA1c</span></li>
+        <li><span class="step-num">4</span><span class="step-text">Decidir si requiere neuroimagen urgente</span></li>
+      </ol>
+    </div>
+    <div class="tab-content" id="ppc2">
+      <div class="section-h">III par con afectación pupilar — URGENTE</div>
+      <div class="alert-red">TC + ATC o ARM inmediata para descartar aneurisma de arteria comunicante posterior</div>
+      <div class="section-h">III par sin afectación pupilar + DM/HTA + &gt;45 años</div>
+      <ul class="bullet-list">
+        <li>Imagen de SNC igualmente recomendada — excepción solo si pupila completamente respetada + parálisis completa</li>
+        <li>TA + glucemia + HbA1c</li>
+        <li>VSG + PCR si ≥55 años (descartar ACG)</li>
+      </ul>
+      <div class="section-h">IV par</div>
+      <ul class="bullet-list">
+        <li>RM si &lt;45 años o sin factores de riesgo vasculopático</li>
+        <li>Fotografías antiguas — ¿inclinación de cabeza de larga data? (congénita)</li>
+      </ul>
+      <div class="section-h">VI par</div>
+      <ul class="bullet-list">
+        <li>RM si &lt;45 años, bilateral, con papiledema, o cualquier otro signo neurológico</li>
+        <li>Considerar PL si imagen negativa y &lt;45 años (descartar HIC)</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 10.5, 10.7, 10.8</div>
+    </div>
+    <div class="tab-content" id="ppc3">
+      <div class="alert-red">III par + PUPILA DILATADA ARREACTIVA = aneurisma hasta demostrar lo contrario → TC/ATC URGENTE</div>
+      <div class="alert-red">VI par bilateral → descartar hipertensión intracraneal (HIC) — buscar papiledema</div>
+      <div class="alert-yellow">Parálisis isquémica del III par: recuperación en 3 meses. Si no mejora → neuroimagen obligatoria</div>
+      <div class="alert-blue">Miastenia grave puede simular cualquier parálisis ocular — pupila siempre respetada, síntomas variables</div>
+    </div>
+    <div class="tab-content" id="ppc4">
+      <div class="section-h">Etiología según edad</div>
+      <ul class="bullet-list">
+        <li><strong>&lt;45 años:</strong> trauma, desmielinización, idiopática, congénita</li>
+        <li><strong>45-65 años:</strong> vasculopática (DM, HTA) es la más frecuente</li>
+        <li><strong>&gt;55 años:</strong> siempre descartar ACG</li>
+        <li><strong>Cualquier edad:</strong> tumor, aneurisma si hay signos atípicos</li>
+      </ul>
+      <div class="section-h">Tratamiento sintomático</div>
+      <ul class="bullet-list">
+        <li>Parche ocular o cinta translúcida en un cristal para aliviar diplopía</li>
+        <li>Prismas en gafas si desviación pequeña y estable</li>
+        <li>Cirugía de estrabismo si persiste &gt;6 meses estable</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card cat-neuro" data-cat="neuro" data-search="papiledema edema papilar bilateral hipertensión intracraneal seudotumor cerebral cefalea RM PL">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🧠</div>
+    <div class="card-info"><div class="card-title">Papiledema / Edema de papila</div><div class="card-sub">↑ Presión intracraneal · RM urgente · PL</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,&#39;pap1&#39;)">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;pap2&#39;)">💊 Estudios</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;pap3&#39;)">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;pap4&#39;)">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="pap1">
+      <div class="section-h">Reconocer papiledema verdadero</div>
+      <ul class="bullet-list">
+        <li>Papila hiperemia y tumefacta <strong>bilateral</strong></li>
+        <li>Vasos oscurecidos por edema en el borde</li>
+        <li>Hemorragias peripapilares en llama</li>
+        <li>Pérdida de pulso venoso espontáneo</li>
+        <li>Visión y color <strong>normales al inicio</strong> (diferencia de neuropatía óptica)</li>
+      </ul>
+      <div class="section-h">Síntomas asociados</div>
+      <ul class="bullet-list">
+        <li>Pérdida visual transitoria de segundos (al cambiar postura)</li>
+        <li>Cefalea, náuseas, vómitos, diplopía</li>
+      </ul>
+      <div class="section-h">Pasos urgentes</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text"><strong>RM con gadolinio + flebografía RM</strong> — urgente</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Si RM negativa y sin contraindicaciones → PL con medición de presión de apertura</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Medir TA</span></li>
+        <li><span class="step-num">4</span><span class="step-text">Tratar la causa subyacente</span></li>
+      </ol>
+    </div>
+    <div class="tab-content" id="pap2">
+      <div class="section-h">Hipertensión intracraneal idiopática (seudotumor cerebral)</div>
+      <ul class="bullet-list">
+        <li>Mujer joven obesa + papiledema + RM normal + PL presión &gt;25 cmH₂O</li>
+        <li>Puede asociar parálisis VI par</li>
+      </ul>
+      <div class="drug-row"><div><div class="drug-name">Acetazolamida 250-500 mg VO</div><div class="drug-ci">Primera línea HIC idiopática</div></div><div class="drug-dose">c/6-12h</div></div>
+      <div class="drug-row"><div><div class="drug-name">PL evacuadora</div><div class="drug-ci">Si pérdida visual aguda</div></div><div class="drug-dose">Urgente</div></div>
+      <div class="drug-row"><div><div class="drug-name">Derivación neuroquirúrgica</div><div class="drug-ci">Si no responde a tratamiento médico</div></div><div class="drug-dose">—</div></div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 10.15, 10.16</div>
+    </div>
+    <div class="tab-content" id="pap3">
+      <div class="alert-red">Papiledema unilateral o asimétrico NO descarta HIC — puede haber asimetría en fases tempranas</div>
+      <div class="alert-red">VI par bilateral + papiledema = HIC hasta demostrar lo contrario → RM urgente</div>
+      <div class="alert-yellow">Seudopapiledema (drusas): vasos NO oscurecidos, papila no hiperémica, pulso venoso presente → eco-B confirma drusas</div>
+    </div>
+    <div class="tab-content" id="pap4">
+      <div class="section-h">Diagnóstico diferencial del edema papilar</div>
+      <ul class="bullet-list">
+        <li><strong>Papilitis (neuritis óptica):</strong> unilateral, DPAR, ↓ AV, ↓ visión colores</li>
+        <li><strong>NOINA:</strong> unilateral, edema pálido segmentario, ↓ AV súbita</li>
+        <li><strong>OVCR:</strong> unilateral, hemorragias difusas 4 cuadrantes</li>
+        <li><strong>Drusas papilares:</strong> bilateral, sin hiperemia, vasos no oscurecidos</li>
+        <li><strong>Papilopatía diabética:</strong> edema benigno en DBT, AV leve-moderada</li>
+      </ul>
+      <div class="section-h">Etiologías de HIC</div>
+      <ul class="bullet-list">
+        <li>Tumor intracraneal / Hidrocefalia</li>
+        <li>Trombosis senos venosos cerebrales</li>
+        <li>Hemorragia subaracnoidea</li>
+        <li>Meningitis / Encefalitis</li>
+        <li>HIC idiopática (seudotumor cerebral)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="section-title" data-cat="uv">🟤 Uveítis</div>
+
+<div class="card cat-uv" data-cat="uv" data-search="uveítis anterior iritis iridociclitis precipitados corneales sinequias HLA-B27 ciclopentolato prednisolona">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🔶</div>
+    <div class="card-info">
+      <div class="card-title">Uveítis anterior (iritis/iridociclitis)</div>
+      <div class="card-sub">Aguda y crónica · Etiologías · Tratamiento</div>
+    </div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn" onclick="switchTab(this, &#39;ua1&#39;)">Clínica</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;ua2&#39;)">Etiologías</div>
+      <div class="tab-btn" onclick="switchTab(this, &#39;ua3&#39;)">Estudio</div>
+      <div class="tab-btn active" onclick="switchTab(this, &#39;ua4&#39;)">Tratamiento</div>
+    </div>
+    <div class="tab-content" id="ua1">
+      <div class="section-h">Síntomas</div>
+      <ul class="bullet-list">
+        <li><strong>Aguda:</strong> dolor, enrojecimiento, fotofobia (también consensual), lagrimeo, disminución de la visión</li>
+        <li><strong>Crónica:</strong> disminución de visión (cataratas, EMQ, MER), moscas volantes, períodos de exacerbación y remisión (ej. AIJ)</li>
+      </ul>
+      <div class="section-h">Signos — BMC</div>
+      <ul class="bullet-list">
+        <li>Células y turbidez en CA, hiperemia ciliar (perilímbica)</li>
+        <li><strong>PC finos estrellados</strong> (todo el endotelio): VHS, VVZ, CMV, Fuchs</li>
+        <li><strong>PC pequeños no granulomatosos</strong>: HLA-B27, trauma, Posner-Schlossman</li>
+        <li><strong>PC granulomatosos</strong> ("grasa de cordero"): sarcoidosis, sífilis, TB, VKH, oftalmía simpática</li>
+        <li>PIO baja (frecuente) o alta (herpética, Fuchs, Posner-Schlossman)</li>
+        <li>Hipopión (HLA-B27, Behçet, endoftalmitis, rifabutina)</li>
+        <li>Sinequias posteriores, queratopatía en banda (AIJ)</li>
+      </ul>
+      <div class="alert-blue">💡 PC granulomatosos → buscar sarcoidosis, sífilis, TB, VKH</div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 12.1</div>
+    </div>
+    <div class="tab-content" id="ua2">
+      <div class="section-h">Aguda — más frecuentes</div>
+      <ul class="bullet-list">
+        <li><strong>Idiopática</strong> — ~50% de los casos</li>
+        <li><strong>HLA-B27</strong> — unilateral alternante, recurrente; asociada a espondilitis anquilosante, artritis reactiva, psoriásica, EII</li>
+        <li><strong>Herpética</strong> (VHS/VVZ) — PC finos difusos, PIO alta, atrofia del iris</li>
+        <li><strong>Posner-Schlossman</strong> — episodios recurrentes PIO muy alta, inflamación mínima</li>
+        <li><strong>Traumática</strong> — antecedente de trauma</li>
+        <li><strong>Behçet</strong> — hipopión agudo, úlceras aftosas, úlceras genitales</li>
+      </ul>
+      <div class="section-h">Crónica</div>
+      <ul class="bullet-list">
+        <li><strong>AIJ</strong> — niñas pequeñas, indolora, bilateral, ANA+</li>
+        <li><strong>ICHF (Fuchs)</strong> — heterocromía, sin sinequias, PC finos difusos</li>
+        <li><strong>Sarcoidosis</strong> — PC en grasa de cordero, nódulos en iris</li>
+        <li><strong>Sífilis</strong> — PC granulomatosos, roséola del iris, considerar siempre</li>
+        <li><strong>TB</strong> — PPD/IGRA+, sin necesariamente Rx tórax alterado</li>
+      </ul>
+      <div class="alert-yellow">⚠ Uveítis bilateral, granulomatosa o recurrente → estudiar sarcoidosis, sífilis y TB siempre</div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 12.1</div>
+    </div>
+    <div class="tab-content" id="ua3">
+      <div class="section-h">Cuándo NO pedir estudios de laboratorio</div>
+      <ul class="bullet-list">
+        <li>Primer episodio leve no granulomatoso unilateral sin enfermedad sistémica sugestiva</li>
+        <li>Signos clínicos clásicos para un diagnóstico específico (herpética, Fuchs, toxo)</li>
+        <li>Uveítis en contexto de enfermedad conocida</li>
+      </ul>
+      <div class="section-h">Estudios dirigidos según sospecha</div>
+      <ul class="bullet-list">
+        <li>RPR o VDRL + FTA-ABS (confirmar) — siempre en bilateral/granulomatosa</li>
+        <li>PPD o IGRA — siempre en bilateral/granulomatosa</li>
+        <li>Rx o TC tórax — sarcoidosis y TB</li>
+        <li>ECA ± lisozima — sarcoidosis (utilidad cuestionable)</li>
+        <li>HLA-B27 — UA aguda unilateral o bilateral alternante, especialmente con hipopión</li>
+        <li>PCR de humor acuoso — sospecha viral (CMV, VHS, VVZ)</li>
+        <li>En niños: ANA, FR, HLA-B27, análisis de orina</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 12.1</div>
+    </div>
+    <div class="tab-content active" id="ua4">
+      <div class="section-h">Tratamiento</div>
+      <div class="drug-row"><div><div class="drug-name">Ciclopentolato 1%</div><div class="drug-ci">Leve-moderada. Atropina 1% c/6-8h si grave</div></div><div class="drug-dose">c/8h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Acetato de prednisolona 1%</div><div class="drug-ci">c/1-2h si grave. Reducir según respuesta celular en CA</div></div><div class="drug-dose">c/1-6h</div></div>
+      <div class="alert-red">⚠ Reducir esteroides MUY gradualmente (no suspender de golpe → rebote intenso)<br>⚠ Descartar causa infecciosa ANTES de esteroides de depósito o sistémicos<br>⚠ NO pilocarpina para tratar el glaucoma secundario</div>
+      <div class="section-h">Si no responde a tópicos</div>
+      <ul class="bullet-list">
+        <li>Triamcinolona subtenoniana 40 mg/ml (0.5-1 ml) — útil en UA grave unilateral</li>
+        <li>Prednisona sistémica si bilateral grave o no responde</li>
+        <li>Derivar a especialista en uveítis + reumatólogo</li>
+      </ul>
+      <div class="section-h">Glaucoma secundario</div>
+      <ul class="bullet-list">
+        <li>Supresores del acuoso (β-bloqueantes, IAC, brimonidina)</li>
+        <li>NO pilocarpina (empeora inflamación)</li>
+      </ul>
+      <div class="section-h">Seguimiento</div>
+      <ul class="bullet-list">
+        <li>Cada 1-7 días en fase aguda, cada 1-6 meses cuando estable</li>
+        <li>Reducir prednisolona: 1 gota menos cada 3-7 días al mejorar</li>
+        <li>Mantener ciclopléjico al menos cada noche hasta que CA esté limpia</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 12.1</div>
+    </div>
+  </div>
+</div>
+
+<!-- UVEITIS INTERMEDIA -->
+<div class="card cat-uv" data-cat="uv" data-search="uveítis intermedia pars planitis bolas nieve copos vítreo esclerosis múltiple sarcoidosis triamcinolona subtenoniana EMQ">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">❄️</div>
+    <div class="card-info"><div class="card-title">Uveítis intermedia / Pars planitis</div><div class="card-sub">Bolas de nieve · Vítreo inferior · EMQ</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,&#39;ui1&#39;)">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;ui2&#39;)">💊 Fármacos</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;ui3&#39;)">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;ui4&#39;)">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="ui1">
+      <div class="section-h">Reconocer</div>
+      <ul class="bullet-list">
+        <li>Moscas volantes indoloras + ↓ AV bilateral, edad 15-40 años</li>
+        <li><strong>Bolas de nieve:</strong> agregados celulares en vítreo inferior</li>
+        <li><strong>Copos de nieve:</strong> exudados blanquecinos sobre ora serrata inferior (pars planitis) — solo visibles con OI + compresión escleral</li>
+        <li>Inflamación de CA mínima o ausente</li>
+      </ul>
+      <div class="section-h">Pedir</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Rx/TC tórax + ECA ± lisozima (sarcoidosis)</span></li>
+        <li><span class="step-num">2</span><span class="step-text">PPD o IGRA + RPR/VDRL + FTA-ABS</span></li>
+        <li><span class="step-num">3</span><span class="step-text">RM con gadolinio si hay síntomas neurológicos (descartar EM)</span></li>
+        <li><span class="step-num">4</span><span class="step-text">TCO para documentar EMQ</span></li>
+      </ol>
+    </div>
+    <div class="tab-content" id="ui2">
+      <div class="drug-row"><div><div class="drug-name">Prednisolona 1% tópica</div></div><div class="drug-dose">c/1-2h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Triamcinolona subtenoniana 40 mg/ml</div><div class="drug-ci">0.5-1 ml — repetir c/6-8 sem. Precaución si ↑ PIO con esteroides</div></div><div class="drug-dose">—</div></div>
+      <div class="drug-row"><div><div class="drug-name">Prednisona 40-60 mg VO</div><div class="drug-ci">Si mínima respuesta tras 3 inyecciones subtenonianas</div></div><div class="drug-dose">1/día × 4-6 sem luego reducir</div></div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 12.2</div>
+    </div>
+    <div class="tab-content" id="ui3">
+      <div class="alert-yellow">Celularidad leve en vítreo sin síntomas ni pérdida visual → observación, no tratar</div>
+      <div class="alert-red">NO esteroides de depósito si antecedente de respuesta hipertensiva a corticoides tópicos</div>
+      <div class="alert-blue">AINE tópicos NO son eficaces para EMQ uveítico — usar esteroides</div>
+      <div class="alert-yellow">Cataratas frecuentes — operar solo con inflamación ausente ≥3 meses</div>
+    </div>
+    <div class="tab-content" id="ui4">
+      <div class="section-h">Etiologías</div>
+      <ul class="bullet-list">
+        <li>Pars planitis idiopática (&gt;70%)</li>
+        <li>Sarcoidosis · Esclerosis múltiple · Lyme · Sífilis</li>
+      </ul>
+      <div class="section-h">Complicaciones</div>
+      <ul class="bullet-list">
+        <li>EMQ (causa principal de ↓ AV), catarata subcapsular posterior</li>
+        <li>Neovascularización periférica, DR exudativo, glaucoma secundario</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- UVEITIS POSTERIOR Y PANUVEITIS -->
+<div class="card cat-uv" data-cat="uv" data-search="uveítis posterior panuveítis vitritis vasculitis retiniana coroiditis manchas blancas sarcoidosis sífilis VKH Behçet linfoma">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🌑</div>
+    <div class="card-info"><div class="card-title">Uveítis posterior y panuveítis</div><div class="card-sub">Vitritis · Vasculitis retiniana · Lesiones coroideas</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,&#39;up1&#39;)">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;up2&#39;)">💊 Estudios</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;up3&#39;)">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;up4&#39;)">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="up1">
+      <div class="section-h">Reconocer</div>
+      <ul class="bullet-list">
+        <li>Visión borrosa + moscas volantes — sin dolor ni enrojecimiento habitualmente</li>
+        <li>Células en vítreo posterior, turbidez vítrea</li>
+        <li>Lesiones inflamatorias retinianas o coroideas, vainas perivasculares</li>
+        <li><strong>Panuveítis:</strong> inflamación grave de CA + vítreo + retina/coroides</li>
+      </ul>
+      <div class="alert-red">Uveítis posterior + dolor intenso → sospechar endoftalmitis o escleritis posterior</div>
+      <div class="section-h">Pedir según sospecha</div>
+      <ul class="bullet-list">
+        <li>RPR/VDRL + FTA-ABS — sífilis (siempre en bilateral/granulomatosa)</li>
+        <li>PPD o IGRA + Rx/TC tórax + ECA — TB y sarcoidosis</li>
+        <li>Toxoplasma IgG/IgM · HLA-A29 (perdigonada) · HLA-B51 (Behçet)</li>
+        <li>PCR humor vítreo si diagnóstico dudoso</li>
+      </ul>
+    </div>
+    <div class="tab-content" id="up2">
+      <div class="section-h">Imagen y procedimientos</div>
+      <ul class="bullet-list">
+        <li>AGFIV/TCO — documentar EMQ, vasculitis, lesiones coroideas</li>
+        <li>TC/RM + PL si sospecha linfoma o infección SNC</li>
+        <li>Vitrectomía diagnóstica en casos refractarios o atípicos</li>
+      </ul>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 12.3</div>
+    </div>
+    <div class="tab-content" id="up3">
+      <div class="alert-red">Paciente &gt;50 años con células vítreas que no responde a corticoides → descartar linfoma intraocular</div>
+      <div class="alert-yellow">Panuveítis bilateral → pensar en sarcoidosis, sífilis, VKH, Behçet, TB</div>
+      <div class="alert-blue">Síndrome de enmascaramiento — siempre considerarlo en muy jóvenes o muy ancianos con uveítis atípica</div>
+    </div>
+    <div class="tab-content" id="up4">
+      <div class="section-h">Causas frecuentes de panuveítis</div>
+      <ul class="bullet-list">
+        <li>Sarcoidosis · Sífilis · VKH · Behçet · TB · Oftalmía simpática</li>
+      </ul>
+      <div class="section-h">Vasculitis venosa ("salpicaduras de cera")</div>
+      <ul class="bullet-list">
+        <li>Sarcoidosis — exudados amarillentos alrededor de las venas</li>
+        <li>Pars planitis · Sífilis · Enfermedad de Eales</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- UVEITIS HLA-B27 -->
+<div class="card cat-uv" data-cat="uv" data-search="uveítis HLA-B27 espondilitis anquilosante artritis reactiva Reiter psoriásica hipopión recurrente unilateral alternante">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🔁</div>
+    <div class="card-info"><div class="card-title">Uveítis asociada a HLA-B27</div><div class="card-sub">Recurrente · Unilateral alternante · Espondiloartropatías</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,&#39;hla1&#39;)">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;hla2&#39;)">💊 Fármacos</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;hla3&#39;)">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,&#39;hla4&#39;)">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="hla1">
+      <div class="section-h">Reconocer</div>
+      <ul class="bullet-list">
+        <li>UA no granulomatosa <strong>unilateral recurrente</strong> o bilateral alternante</li>
+        <li>Reacción intensa en CA: células, turbidez, fibrina, <strong>hipopión</strong></li>
+        <li>Sinequias posteriores que se forman rápidamente</li>
+        <li>Más frecuente en hombres jóvenes</li>
+      </ul>
+      <div class="section-h">Preguntar por síntomas sistémicos</div>
+      <ul class="bullet-list">
+        <li>Dolor lumbar/cervical peor al levantarse (espondilitis anquilosante)</li>
+        <li>Artritis, úlceras bucales, síntomas urinarios, diarrea, lesiones cutáneas</li>
+      </ul>
+      <div class="section-h">Pedir</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">HLA-B27 — confirma el diagnóstico</span></li>
+        <li><span class="step-num">2</span><span class="step-text">VSG + Rx columna sacroilíaca si sospecha EA</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Interconsulta reumatología</span></li>
+      </ol>
+    </div>
+    <div class="tab-content" id="hla2">
+      <div class="drug-row"><div><div class="drug-name">Ciclopentolato 1%</div><div class="drug-ci">Atropina 1% si inflamación muy grave</div></div><div class="drug-dose">c/8h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Prednisolona 1%</div><div class="drug-ci">c/1-2h si grave. Reducir según respuesta</div></div><div class="drug-dose">c/1-6h</div></div>
+      <div class="drug-row"><div><div class="drug-name">AINE sistémico (naproxeno)</div><div class="drug-ci">Para espondilitis anquilosante — con alimentos</div></div><div class="drug-dose">c/12h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Inmunomoduladores (anti-TNF)</div><div class="drug-ci">Casos recidivantes frecuentes — con reumatólogo</div></div><div class="drug-dose">—</div></div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 12.4</div>
+    </div>
+    <div class="tab-content" id="hla3">
+      <div class="alert-red">Sinequias se forman rápido → ciclopléjico siempre, incluso de noche hasta que CA esté limpia</div>
+      <div class="alert-yellow">Recurrencias múltiples frecuentes → considerar inmunomoduladores a largo plazo con reumatólogo</div>
+      <div class="alert-blue">Más de la mitad tienen espondiloartropatía subyacente que se diagnostica recién después del inicio de la uveítis</div>
+    </div>
+    <div class="tab-content" id="hla4">
+      <div class="section-h">Enfermedades asociadas a HLA-B27</div>
+      <ul class="bullet-list">
+        <li><strong>Espondilitis anquilosante</strong> — varones jóvenes, dolor lumbar, Rx sacroilíaca anormal</li>
+        <li><strong>Artritis reactiva (Reiter)</strong> — conjuntivitis + uretritis + artritis</li>
+        <li><strong>Artritis psoriásica</strong> — lesiones cutáneas + artritis extremidades superiores</li>
+        <li><strong>EII (Crohn/CU)</strong> — diarrea crónica, heces hemorrágicas</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<div class="section-title" data-cat="inoc">🦠 Infecciones / Inflamación intraocular</div>
+
+<!-- TOXOPLASMOSIS -->
+<div class="card cat-inoc" data-cat="inoc" data-search="toxoplasmosis retinocoroiditis lesión satélite cicatriz pigmentada vitritis pyrimethamine sulfadiazina clindamicina">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🪱</div>
+    <div class="card-info"><div class="card-title">Toxoplasmosis ocular</div><div class="card-sub">Retinocoroiditis · Lesión satélite · Vitritis</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,'tx1')">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,'tx2')">💊 Fármacos</div>
+      <div class="tab-btn" onclick="switchTab(this,'tx3')">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,'tx4')">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="tx1">
+      <span class="badge badge-orange">Urgencia relativa</span>
+      <div class="section-h">Reconocer</div>
+      <ul class="bullet-list">
+        <li>Lesión blanco-amarillenta activa con bordes difusos, adyacente a <strong>cicatriz pigmentada antigua</strong> ("lesión satélite")</li>
+        <li>Vitritis sobre la lesión activa ("faro en la niebla")</li>
+        <li>Inflamación en CA variable (granulomatosa o no)</li>
+        <li>Unilateral en inmunocompetentes; multifocal en inmunodeprimidos</li>
+      </ul>
+      <div class="section-h">Estudios</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">Serología: Toxoplasma IgG (suele ser positiva) + IgM si sospecha infección aguda</span></li>
+        <li><span class="step-num">2</span><span class="step-text">Evaluar inmunodepresión: HIV, corticoides crónicos</span></li>
+        <li><span class="step-num">3</span><span class="step-text">AGF si lesión cerca del nervio óptico o mácula</span></li>
+      </ol>
+    </div>
+    <div class="tab-content" id="tx2">
+      <span class="badge badge-blue">Tratar si: lesión amenaza mácula o nervio · Vitritis intensa · Inmunodeprimido</span>
+      <div class="drug-row"><div><div class="drug-name">Pirimetamina 25-50 mg VO + Ácido folínico 5-10 mg</div><div class="drug-ci">No sin ácido folínico — riesgo supresión medular. CI embarazo 1er trimestre</div></div><div class="drug-dose">1×/día × 4-6 sem</div></div>
+      <div class="drug-row"><div><div class="drug-name">Sulfadiazina 1 g VO</div><div class="drug-ci">Con abundante hidratación. CI sulfa-alergia</div></div><div class="drug-dose">c/6h × 4-6 sem</div></div>
+      <div class="drug-row"><div><div class="drug-name">Clindamicina 300 mg VO</div><div class="drug-ci">Alternativa si intolerancia o alergia a sulfa</div></div><div class="drug-dose">c/6h × 4-6 sem</div></div>
+      <div class="drug-row"><div><div class="drug-name">Prednisolona 0.5-1 mg/kg/día VO</div><div class="drug-ci">Solo si lesión visualmente amenazante Y cubierta por ATB desde 24-48h</div></div><div class="drug-dose">Reducir en 1-2 sem</div></div>
+      <div class="drug-row"><div><div class="drug-name">Ciclopentolato 1% tópico</div></div><div class="drug-dose">c/8h si hay CA activa</div></div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 11.7</div>
+    </div>
+    <div class="tab-content" id="tx3">
+      <div class="alert-red">NUNCA dar corticoides solos sin cobertura antibiótica — puede provocar extensión masiva de la lesión</div>
+      <div class="alert-red">Lesión yuxtapapilar o yuxtafoveal → tratar siempre independientemente del tamaño</div>
+      <div class="alert-yellow">En inmunodeprimidos (HIV): lesiones múltiples, más agresivas, recurrentes → profilaxis secundaria con TMP-SMX o pirimetamina a largo plazo</div>
+      <div class="alert-blue">Serología IgG negativa no descarta toxo ocular — la infección crónica puede dar IgG muy baja</div>
+    </div>
+    <div class="tab-content" id="tx4">
+      <div class="section-h">Evolución natural</div>
+      <ul class="bullet-list">
+        <li>Lesión activa cicatriza en 4-8 semanas (con o sin tratamiento)</li>
+        <li>Recurrencias frecuentes (30-40% a 3 años) — siempre adyacente a cicatriz</li>
+        <li>Causa más frecuente de uveítis posterior infecciosa en inmunocompetentes</li>
+      </ul>
+      <div class="section-h">Lesiones que amenaza la visión</div>
+      <ul class="bullet-list">
+        <li>Yuxtafoveal (a &lt;1500 µm de la fóvea) o yuxtapapilar</li>
+        <li>Vitritis intensa que oscurece la visualización</li>
+        <li>Lesión grande (&gt;1 diámetro papilar)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SARCOIDOSIS OCULAR -->
+<div class="card cat-inoc" data-cat="inoc" data-search="sarcoidosis ocular uveítis granulomatosa nódulos iris coroiditis perlas de rosario vasculitis velas de cera ECA TC tórax">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🔮</div>
+    <div class="card-info"><div class="card-title">Sarcoidosis ocular</div><div class="card-sub">Uveítis granulomatosa · Multisistémica · ECA · TC tórax</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,'sa1')">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,'sa2')">💊 Fármacos</div>
+      <div class="tab-btn" onclick="switchTab(this,'sa3')">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,'sa4')">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="sa1">
+      <span class="badge badge-purple">Diagnóstico de exclusión</span>
+      <div class="section-h">Signos oculares característicos</div>
+      <ul class="bullet-list">
+        <li>PC granulomatosos en "grasa de cordero" en el endotelio inferior</li>
+        <li><strong>Nódulos de Koeppe</strong> (borde pupilar) o <strong>Busacca</strong> (estroma del iris)</li>
+        <li>Vitritis, lesiones coroideas amarillas múltiples</li>
+        <li><strong>Vasculitis venosa</strong>: exudados perivasculares ("salpicaduras de cera"/"perlas de rosario")</li>
+        <li>Granulomas conjuntivales, dacrioadenitis</li>
+      </ul>
+      <div class="section-h">Estudios</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text">TC de tórax (adenopatías hiliares bilaterales) — más sensible que Rx</span></li>
+        <li><span class="step-num">2</span><span class="step-text">ECA sérica + lisozima (↑ en ~60% — valor diagnóstico limitado)</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Calcemia, calciuria 24h, LDH</span></li>
+        <li><span class="step-num">4</span><span class="step-text">Interconsulta clínica médica o neumología para biopsia</span></li>
+      </ol>
+    </div>
+    <div class="tab-content" id="sa2">
+      <div class="drug-row"><div><div class="drug-name">Prednisolona 1% tópica</div><div class="drug-ci">c/1-2h si inflamación CA activa</div></div><div class="drug-dose">c/1-6h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Ciclopentolato 1%</div></div><div class="drug-dose">c/8h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Triamcinolona subtenoniana 40 mg/ml</div><div class="drug-ci">Uveítis posterior/intermedia unilateral</div></div><div class="drug-dose">0.5-1 ml</div></div>
+      <div class="drug-row"><div><div class="drug-name">Prednisona 40-60 mg VO</div><div class="drug-ci">Bilateral grave o compromiso sistémico</div></div><div class="drug-dose">1/día con reducción gradual</div></div>
+      <div class="drug-row"><div><div class="drug-name">Metotrexato o azatioprina</div><div class="drug-ci">Ahorradores de esteroides en crónica — con clínica médica</div></div><div class="drug-dose">—</div></div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 12.7</div>
+    </div>
+    <div class="tab-content" id="sa3">
+      <div class="alert-red">Descartar sífilis y TB ANTES de iniciar corticoides sistémicos — clínica similar</div>
+      <div class="alert-yellow">ECA normal no descarta sarcoidosis — sensibilidad ~60%. La TC tórax es más útil</div>
+      <div class="alert-blue">Sarcoidosis puede afectar vías lagrimales → dacrioadenitis bilateral o parálisis facial periférica</div>
+      <div class="alert-yellow">Glaucoma secundario por sinequias o infiltración trabecular — PIO puede estar elevada con inflamación activa</div>
+    </div>
+    <div class="tab-content" id="sa4">
+      <div class="section-h">Espectro de compromiso ocular</div>
+      <ul class="bullet-list">
+        <li><strong>Uveítis anterior</strong> — más frecuente (granulomatosa, crónica)</li>
+        <li><strong>Uveítis intermedia / posterior</strong> — vasculitis venosa, coroiditis</li>
+        <li><strong>Panuveítis</strong> — peor pronóstico visual</li>
+        <li><strong>Nervio óptico</strong> — granuloma papilar, neuropatía óptica</li>
+        <li><strong>Conjuntiva / párpado</strong> — granulomas, dacrioadenitis</li>
+      </ul>
+      <div class="section-h">Criterios diagnósticos internacionales (IWOS)</div>
+      <ul class="bullet-list">
+        <li>Histología de granuloma no caseificante — definitivo</li>
+        <li>TC tórax compatible + hallazgos oculares típicos — presunto</li>
+        <li>Sin histología + clínica ocular sugestiva — probable</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ENDOFTALMITIS -->
+<div class="card cat-inoc" data-cat="inoc" data-search="endoftalmitis postoperatoria exógena endógena hipopión vitritis inyección intravítrea vancomicina ceftazidima vitrectomía">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">🔥</div>
+    <div class="card-info"><div class="card-title">Endoftalmitis</div><div class="card-sub">Postoperatoria · Post-inyección · Endógena · EMERGENCIA</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,'en1')">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,'en2')">💊 Fármacos</div>
+      <div class="tab-btn" onclick="switchTab(this,'en3')">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,'en4')">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="en1">
+      <span class="badge badge-red">EMERGENCIA OFTALMOLÓGICA</span>
+      <div class="section-h">Reconocer</div>
+      <ul class="bullet-list">
+        <li>↓ AV aguda + dolor + enrojecimiento post cirugía o inyección intravítrea</li>
+        <li><strong>Hipopión</strong> (sello diagnóstico), vitritis, turbidez en CA</li>
+        <li>Exudado blanco en vítreo, posible hifema</li>
+        <li>Endógena: bilateral posible, foco séptico sistémico, paciente febril</li>
+      </ul>
+      <div class="section-h">Pasos urgentes</div>
+      <ol class="step-list">
+        <li><span class="step-num">1</span><span class="step-text"><strong>Llamar al cirujano de guardia — no demorar</strong></span></li>
+        <li><span class="step-num">2</span><span class="step-text">Eco-B: confirmar vítreo comprometido, descartar DR</span></li>
+        <li><span class="step-num">3</span><span class="step-text">Tomar muestra de humor vítreo (vía pars plana) o acuoso antes de ATB si es posible</span></li>
+        <li><span class="step-num">4</span><span class="step-text">Inyección intravítrea de ATB inmediata</span></li>
+        <li><span class="step-num">5</span><span class="step-text">Si AV ≤percepción luminosa → vitrectomía pars plana de urgencia (EVS trial)</span></li>
+      </ol>
+    </div>
+    <div class="tab-content" id="en2">
+      <span class="badge badge-red">Inyección intravítrea — primera línea</span>
+      <div class="drug-row"><div><div class="drug-name">Vancomicina 1 mg / 0.1 ml</div><div class="drug-ci">Gram positivos (S. epidermidis, S. aureus) — cubrir siempre</div></div><div class="drug-dose">ITV</div></div>
+      <div class="drug-row"><div><div class="drug-name">Ceftazidima 2 mg / 0.1 ml</div><div class="drug-ci">Gram negativos — NO mezclar con vancomicina en misma jeringa</div></div><div class="drug-dose">ITV</div></div>
+      <div class="drug-row"><div><div class="drug-name">Dexametasona 0.4 mg / 0.1 ml</div><div class="drug-ci">Considerar junto a ATB para reducir inflamación — controvertido</div></div><div class="drug-dose">ITV</div></div>
+      <div class="drug-row"><div><div class="drug-name">Prednisolona 1% tópica</div></div><div class="drug-dose">c/1-2h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Atropina 1% tópica</div></div><div class="drug-dose">c/8-12h</div></div>
+      <div class="drug-row"><div><div class="drug-name">ATB sistémico (ciprofloxacina VO)</div><div class="drug-ci">En endógena o casos graves; penetración ITV limitada por VO</div></div><div class="drug-dose">500 mg c/12h</div></div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 9.11</div>
+    </div>
+    <div class="tab-content" id="en3">
+      <div class="alert-red">NO demorar el tratamiento esperando cultivos — la pérdida visual es rápida e irreversible</div>
+      <div class="alert-red">AV ≤percepción luminosa → vitrectomía de urgencia (EVS trial: mejor pronóstico que solo ITV)</div>
+      <div class="alert-yellow">Post-inyección ITV: misma conducta que postoperatoria. Más frecuente con gérmenes gram negativos virulentos</div>
+      <div class="alert-blue">Endoftalmitis crónica por P. acnes: aparece meses post-facoemulsificación, placa blanquecina en cápsula posterior → vitrectomía + recambio LIO</div>
+    </div>
+    <div class="tab-content" id="en4">
+      <div class="section-h">Tipos</div>
+      <ul class="bullet-list">
+        <li><strong>Postoperatoria aguda</strong> (&lt;6 semanas): S. epidermidis, S. aureus — más frecuente</li>
+        <li><strong>Postoperatoria crónica</strong> (&gt;6 semanas): P. acnes, hongos</li>
+        <li><strong>Post-trauma penetrante</strong>: Bacillus cereus (muy agresiva, 24-48h)</li>
+        <li><strong>Post-inyección ITV</strong>: S. viridans, gram negativos</li>
+        <li><strong>Endógena</strong>: siembra hematógena — Candida, Klebsiella (DM/hepatopatía), S. aureus</li>
+      </ul>
+      <div class="section-h">Endoftalmitis endógena</div>
+      <ul class="bullet-list">
+        <li>Buscar foco séptico: hemocultivos, ecocardio, TC tórax-abdomen</li>
+        <li>Cándida: lesiones blancas en "bola de algodón" en retina/vítreo</li>
+        <li>Asia: Klebsiella (hepatopatía/DM) · América: Candida (catéteres)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- TASS -->
+<div class="card cat-inoc" data-cat="inoc" data-search="TASS síndrome tóxico segmento anterior inflamación estéril postoperatoria facoemulsificación edema corneal hipopión difuso">
+  <div class="card-header" onclick="toggleCard(this)">
+    <div class="card-icon">⚗️</div>
+    <div class="card-info"><div class="card-title">TASS — Síndrome tóxico del segmento anterior</div><div class="card-sub">Post-facoemulsificación · Estéril · Edema corneal difuso</div></div>
+    <span class="card-arrow">›</span>
+  </div>
+  <div class="card-body">
+    <div class="tab-bar">
+      <div class="tab-btn active" onclick="switchTab(this,'ts1')">🟢 Hacer ahora</div>
+      <div class="tab-btn" onclick="switchTab(this,'ts2')">💊 Fármacos</div>
+      <div class="tab-btn" onclick="switchTab(this,'ts3')">⚠️ Alertas</div>
+      <div class="tab-btn" onclick="switchTab(this,'ts4')">📋 Profundizar</div>
+    </div>
+    <div class="tab-content active" id="ts1">
+      <span class="badge badge-orange">Post-cirugía · Primeras 24h</span>
+      <div class="section-h">Reconocer</div>
+      <ul class="bullet-list">
+        <li>Inflamación intensa en CA <strong>dentro de las primeras 12-24h</strong> post-facoemulsificación</li>
+        <li><strong>Edema corneal difuso</strong> (afecta todo el estroma, no focal)</li>
+        <li>Hipopión estéril, fibrina en CA</li>
+        <li>Sin dolor intenso (a diferencia de endoftalmitis infecciosa)</li>
+        <li>Sin vitritis (limitado al segmento anterior)</li>
+        <li>Afecta a múltiples pacientes del mismo turno quirúrgico (brote)</li>
+      </ul>
+      <div class="section-h">Diferencial clave: TASS vs Endoftalmitis</div>
+      <table class="grade-table">
+        <tr><th></th><th>TASS</th><th>Endoftalmitis</th></tr>
+        <tr><td>Inicio</td><td>12-24h post-cx</td><td>2-7 días post-cx</td></tr>
+        <tr><td>Dolor</td><td>Leve o ausente</td><td>Intenso</td></tr>
+        <tr><td>Vitritis</td><td>No</td><td>Sí</td></tr>
+        <tr><td>Edema corneal</td><td>Difuso</td><td>Variable</td></tr>
+        <tr><td>Respuesta a ATB</td><td>No</td><td>Sí</td></tr>
+        <tr><td>Tratamiento</td><td>Corticoides</td><td>ATB ITV urgente</td></tr>
+      </table>
+    </div>
+    <div class="tab-content" id="ts2">
+      <div class="drug-row"><div><div class="drug-name">Prednisolona 1% tópica</div><div class="drug-ci">c/1h mientras hay inflamación activa</div></div><div class="drug-dose">c/1-2h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Prednisona VO 40-60 mg</div><div class="drug-ci">Si no responde a tópicos solos — reducción gradual</div></div><div class="drug-dose">1/día × 5-7 días</div></div>
+      <div class="drug-row"><div><div class="drug-name">Atropina 1%</div></div><div class="drug-dose">c/8-12h</div></div>
+      <div class="drug-row"><div><div class="drug-name">Hipotensores oculares</div><div class="drug-ci">Si PIO elevada por bloqueo trabecular — β-bloqueante + IAC</div></div><div class="drug-dose">Según PIO</div></div>
+      <div class="alert-blue">Si duda diagnóstica con endoftalmitis → tratar como endoftalmitis hasta descartar (ITV ATB + corticoides)</div>
+      <div class="source-tag">Fuente: Wills Eye Manual, 7ª ed. — Cap. 9.11 / Cap. sobre complicaciones postoperatorias</div>
+    </div>
+    <div class="tab-content" id="ts3">
+      <div class="alert-red">Ante duda: endoftalmitis hasta demostrar lo contrario → ITV de ATB no esperar</div>
+      <div class="alert-red">NO dar ATB intravítreos innecesarios si el diagnóstico es claro de TASS — no beneficia y tiene riesgo de toxicidad</div>
+      <div class="alert-yellow">TASS en múltiples pacientes del mismo día → alerta de contaminación del autoclave, soluciones de irrigación o instrumental → notificar al quirófano</div>
+      <div class="alert-blue">Complicación tardía: daño endotelial irreversible → queratopatía bullosa → queratoplastia</div>
+    </div>
+    <div class="tab-content" id="ts4">
+      <div class="section-h">Causas frecuentes de TASS</div>
+      <ul class="bullet-list">
+        <li>Residuos de detergente o autoclave en instrumental quirúrgico</li>
+        <li>Conservantes en BSS o viscoelástico contaminado</li>
+        <li>Endotoxinas bacterianas (sin bacterias vivas)</li>
+        <li>pH o osmolaridad incorrectos en soluciones de irrigación</li>
+        <li>Enzimas de limpieza de instrumental no enjuagadas</li>
+      </ul>
+      <div class="section-h">Pronóstico</div>
+      <ul class="bullet-list">
+        <li>Resolución en días-semanas con corticoides si se trata rápido</li>
+        <li>Daño endotelial grave puede ser permanente → baja de visión crónica</li>
+        <li>Glaucoma secundario por daño trabecular en casos graves</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div><!-- end content -->
+
+<script>
+function toggleCard(header) {
+  const card = header.parentElement;
+  card.classList.toggle('open');
+}
+
+function switchTab(btn, tabId) {
+  const card = btn.closest('.card');
+  card.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  card.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+function filterCat(cat, btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.card').forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+  document.querySelectorAll('.section-title').forEach(st => {
+    if (cat === 'all' || st.dataset.cat === cat) {
+      st.classList.remove('hidden');
+    } else {
+      st.classList.add('hidden');
+    }
+  });
+  document.getElementById('searchInput').value = '';
+}
+
+function filterCards() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.cat-btn').classList.add('active');
+  document.querySelectorAll('.section-title').forEach(st => st.classList.remove('hidden'));
+  document.querySelectorAll('.card').forEach(card => {
+    const title = card.querySelector('.card-title').textContent.toLowerCase();
+    const sub = card.querySelector('.card-sub').textContent.toLowerCase();
+    const search = card.dataset.search || '';
+    if (!q || title.includes(q) || sub.includes(q) || search.includes(q)) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+}
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('./sw.js')
+      .then(function() { console.log('SW registrado'); })
+      .catch(function(e) { console.log('SW error', e); });
+  });
+}
+</script>
+
+
+</body></html>
